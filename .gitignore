@@ -270,3 +270,4 @@ __blobstorage__/
 # Other
 .env
 /database
+global.json
