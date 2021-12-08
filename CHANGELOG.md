@@ -1,13 +1,4 @@
-## [project-title] Changelog
+## Project Changelog
 
-<a name="x.y.z"></a>
-# x.y.z (yyyy-mm-dd)
-
-*Features*
-* ...
-
-*Bug Fixes*
-* ...
-
-*Breaking Changes*
-* ...
+<a name="1.0.0"></a>
+First Release
