@@ -43,20 +43,7 @@
             "sku": {
                 "Tier": "Free",
                 "Name": "Free"
-            },
-            "resources": [
-                {
-                    "apiVersion": "2021-01-15",
-                    "name": "appsettings",
-                    "type": "config",
-                    "location": "[parameters('location')]",
-                    "properties": {
-                    },
-                    "dependsOn": [
-                        "[resourceId('Microsoft.Web/staticSites', parameters('name'))]"
-                    ]
-                }
-            ]
+            }            
         }
     ]
 }
