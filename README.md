@@ -51,11 +51,13 @@ To run this sample in your subscription, make sure to fork the repository into y
 
 This repo has three branches that shows the development at different stages
 
-- 1.0: This branch. No database is used and the to-do list is kept in-memory using a List object.
-- 2.0: Database support added. The to-do list is now stored in the database
-- 3.0: Authentication and Authorization added, making the sample complete. 
+- 1.0: This branch
+- 2.0: Database support added
+- 3.0: Authentication and Authorization 
 
 ### V1.0 Notes
+
+In this branch the solution will have a full working front-end, sending REST request to the fully working backend REST API. The to-do list is saved in-memory using a List object. No authentication or authorization is supported.
 
 ## Folder Structure
 
@@ -122,5 +124,3 @@ The first time you'll visit the URL you might not see any to-do item, even if a 
 ## Next steps
 
 Now that the solution is working nicely, it is time to add the database to the picture. Branch 2.0 will guide you in doing that.
-
-Enjoy!
