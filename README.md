@@ -63,7 +63,6 @@ In this branch the solution will have a full working front-end, sending REST req
 
 - `/api`: the NodeJs Azure Function code used to provide the backend API, called by the Vue.Js client. 
 - `/client`: the Vue.Js client. Original source code has been taken from official Vue.js sample and adapted to call a REST client instead of using local storage to save and retrieve todos
-- `/database`: the database scripts and the database deployment tool
 
 ## Install the dependencies
 
