@@ -147,7 +147,7 @@
 							return res.json();
 						}
 					}).then(res => {						
-						this.todos.push(res);
+						this.todos.push(res[0]);
 					})
 				},
 
@@ -186,7 +186,7 @@
 					if (!todo.title) {
 						this.removeTodo(todo);
 					} else {						
-						fetch(API + `/${todo.id}`, {headers: HEADERS, method: "PUT", body: JSON.stringify({title: todo.title})});
+						fetch(API + `/${todo.id}`, {headers: HEADERS, method: "PATCH", body: JSON.stringify({title: todo.title})});
 					}
 				},
 

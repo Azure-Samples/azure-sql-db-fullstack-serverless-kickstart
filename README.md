@@ -51,18 +51,19 @@ To run this sample in your subscription, make sure to fork the repository into y
 
 This repo has three branches that shows the development at different stages
 
-- 1.0: This branch
-- 2.0: Database support added
+- 1.0: First version, no database support
+- 2.0: [This branch] Database support added
 - 3.0: Authentication and Authorization 
 
-### V1.0 Notes
+### V2.0 Notes
 
-In this branch the solution will have a full working front-end, sending REST request to the fully working backend REST API. The to-do list is saved in-memory using a List object. No authentication or authorization is supported.
+TDB
 
 ## Folder Structure
 
 - `/api`: the NodeJs Azure Function code used to provide the backend API, called by the Vue.Js client. 
 - `/client`: the Vue.Js client. Original source code has been taken from official Vue.js sample and adapted to call a REST client instead of using local storage to save and retrieve todos
+- `/database`: the database scripts and the database deployment tool
 
 ## Install the dependencies
 
@@ -79,6 +80,70 @@ Also install the [Azure Static Web Apps CLI](https://github.com/azure/static-web
 ```sh
 npm install -g @azure/static-web-apps-cli`
 ```
+
+## Create the Azure SQL database
+
+If you don't have a Azure SQL server already, you can create one (no additional costs for a server) running the following [AZ CLI](https://docs.microsoft.com/en-us/cli/azure/) command (via [WSL](https://docs.microsoft.com/en-us/windows/wsl/), or Linux or [Azure Cloud Shell](https://azure.microsoft.com/en-us/features/cloud-shell/)):
+
+
+```sh
+az sql server create -n <server-name> -l <location> --admin-user <admin-user> --admin-password <admin-password> -g <resource-group>
+ ```
+
+Create a new Azure SQL database:
+
+```sh
+az sql db create -g <resource-group> -s <server-name> -n todo_dev --service-objective S0
+```
+
+Make sure you have the firewall configured to allow your machine to access Azure SQL:
+
+```
+az sql server firewall-rule create --resource-group <resource-group> --server <server-name> --name AllowMyClientIP_1 --start-ip-address <your_public_ip> --end-ip-address <your_public_ip>
+```
+
+you can get your public IP from here, for example: https://ifconfig.me/
+
+## Deploy the database
+
+Database is deployed using [DbUp](http://dbup.github.io/). Switch to the `./database/deploy` folder and create new `.env` file containg the connection string to the created Azure SQL database. You can get the connection string from the Azure Portal or by running:
+
+```sh
+az sql db show-connection-string --server <server-name> --client ado.net
+```
+
+which will return something like:
+
+```
+Server=tcp:dmmssqlsrv.database.windows.net,1433;Database=<databasename>;User ID=<username>;Password=<password>;Encrypt=true;Connection Timeout=30;
+```
+
+replace the placeholder with the correct value for your database, username and password and you're good to go. Make sure the database user specified in the connection string has enough permission to create objects (for example, make sure is a server administrator or in the db_owner database role) run the deployment application:
+
+```
+cd ./database/deploy
+dotnet run
+```
+
+you will see something like: 
+
+```
+Deploying database: todo_dev
+Testing connection...
+Starting deployment...
+Beginning database upgrade
+Checking whether journal table exists..
+Fetching list of already executed scripts.
+Executing Database Server script '02-update-todo-table.sql'
+Checking whether journal table exists..
+Executing Database Server script '03-update-stored-procs.sql'
+Executing Database Server script '04-move-to-long-user-id.sql'
+Executing Database Server script '05-update-stored-procs-support-long-user-id.sql'
+Upgrade successful
+Success!
+```
+
+Database has been deployed successfully!
 
 ## Test solution locally
 
