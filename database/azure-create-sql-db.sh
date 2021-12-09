@@ -20,17 +20,18 @@ az group create \
 echo "Deploying Azure SQL Database...";
 azureSQLDB="todo_v2"
 azureSQLServer=$(az deployment group create \
-    --name "sql-db-deploy-1.0" \
+    --name "sql-db-deploy-2.0" \
     --resource-group $resourceGroup \
     --template-file azure-sql-db.arm.json \
     --parameters \
         databaseName=$azureSQLDB \
         location=$location \
+    --query properties.outputs.databaseServer.value \
     -o tsv \
     )
 
 echo "Azure SQL Database available at";
-dhn=`az sql db show -g $resourceGroup -s $azureSQLServer -n $azureSQLDB`
+echo "Location: $location"
 echo "Server: $azureSQLServer"
 echo "Database: $azureSQLDB"
 echo "Done."
