@@ -39,9 +39,10 @@ az deployment group create \
     location=$location \
     repositoryToken=$gitToken \
     repositoryUrl=$gitSource \
-    branch="v1.0" \
+    branch="v2.0" \
     appLocation="./client" \
-    apiLocation="./api"
+    apiLocation="./api" \
+    azureSQL="$azureSQL"
 
 echo "Getting Static Web App...";
 dhn=`az staticwebapp show -g $resourceGroup -n $appName --query "defaultHostname"`
