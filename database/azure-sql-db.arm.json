@@ -1,0 +1,87 @@
+{
+    "$schema": "https://schema.management.azure.com/schemas/2019-04-01/deploymentTemplate.json#",
+    "contentVersion": "1.0.0.0",
+    "parameters": {
+		"location": {
+			"type": "string"			
+		},
+		"databaseServer": {
+			"type": "string",
+			"defaultValue": "[uniqueString(resourceGroup().id)]",
+			"metadata": {
+				"description": "Azure SQL Database server"
+			}
+		},
+        "databaseName": {
+			"type": "string",			
+			"metadata": {
+				"description": "Azure SQL Database name"
+			}
+		},
+		"databaseAdministratorLogin": {
+			"type": "string",
+			"defaultValue": "db_admin",
+			"metadata": {
+				"description": "Azure SQL Database admin user name"
+			}
+		},
+		"databaseAdministratorLoginPassword": {
+			"type": "secureString",
+			"defaultValue": "AzUR3SqL_PAzzw0rd!",
+			"metadata": {
+				"description": "Azure SQL Database admin password"
+			}
+		}
+    },
+    "resources": [
+        {
+            "type": "Microsoft.Sql/servers",
+            "apiVersion": "2021-02-01-preview",
+            "name": "[parameters('databaseServer')]",
+            "location": "[parameters('location')]",
+            "kind": "v12.0",
+            "properties": {
+                "administratorLogin": "[parameters('databaseAdministratorLogin')]",
+                "administratorLoginPassword": "[parameters('databaseAdministratorLoginPassword')]",
+                "version": "12.0",
+                "minimalTlsVersion": "1.2",
+                "publicNetworkAccess": "Enabled",
+                "restrictOutboundNetworkAccess": "Disabled"
+            }
+        },
+        {
+            "type": "Microsoft.Sql/servers/databases",
+            "apiVersion": "2021-02-01-preview",
+            "name": "[concat(parameters('databaseServer'), '/', parameters('databaseName'))]",
+            "location": "[parameters('location')]",
+            "dependsOn": [
+                "[resourceId('Microsoft.Sql/servers', parameters('databaseServer'))]"
+            ],
+            "sku": {
+                "name": "HS_Gen5",
+                "capacity": 2
+            },
+            "properties":{
+                "highAvailabilityReplicaCount": 0
+            }
+        },
+        {
+            "type": "Microsoft.Sql/servers/firewallRules",
+            "apiVersion": "2021-02-01-preview",
+            "name": "[concat(parameters('databaseServer'), '/AllowAllWindowsAzureIps')]",
+            "dependsOn": [
+                "[resourceId('Microsoft.Sql/servers', parameters('databaseServer'))]"
+            ],
+            "properties": {
+                "startIpAddress": "0.0.0.0",
+                "endIpAddress": "0.0.0.0"
+            }
+        }
+    ],
+    "outputs": {
+        "databaseServer": {
+            "type": "string",
+            "value": "[parameters('databaseServer')]"
+        }
+    }
+}
