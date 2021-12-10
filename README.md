@@ -51,18 +51,19 @@ To run this sample in your subscription, make sure to fork the repository into y
 
 This repo has three branches that shows the development at different stages
 
-- 1.0: This branch
-- 2.0: Database support added
+- 1.0: First version, no database support
+- 2.0: [This branch] Database support added
 - 3.0: Authentication and Authorization 
 
-### V1.0 Notes
+### V2.0 Notes
 
-In this branch the solution will have a full working front-end, sending REST request to the fully working backend REST API. The to-do list is saved in-memory using a List object. No authentication or authorization is supported.
+In this branch the backend REST API service is modified so that the to-do list can be saved an manged using an Azure SQL database. Communication with the database is done using JSON too, as Azure SQL support [JSON natively](https://docs.microsoft.com/en-us/sql/relational-databases/json/json-data-sql-server?view=sql-server-ver15). 
 
 ## Folder Structure
 
 - `/api`: the NodeJs Azure Function code used to provide the backend API, called by the Vue.Js client. 
 - `/client`: the Vue.Js client. Original source code has been taken from official Vue.js sample and adapted to call a REST client instead of using local storage to save and retrieve todos
+- `/database`: the database scripts and the database deployment tool
 
 ## Install the dependencies
 
@@ -80,9 +81,83 @@ Also install the [Azure Static Web Apps CLI](https://github.com/azure/static-web
 npm install -g @azure/static-web-apps-cli`
 ```
 
+## Create the Azure SQL database
+
+If you don't have a Azure SQL server already, you can create one (no additional costs for a server) running the following [AZ CLI](https://docs.microsoft.com/en-us/cli/azure/) command (via [WSL](https://docs.microsoft.com/en-us/windows/wsl/), or Linux or [Azure Cloud Shell](https://azure.microsoft.com/en-us/features/cloud-shell/)):
+
+
+```sh
+az sql server create -n <server-name> -l <location> --admin-user <admin-user> --admin-password <admin-password> -g <resource-group>
+ ```
+
+Create a new Azure SQL database:
+
+```sh
+az sql db create -g <resource-group> -s <server-name> -n todo_v2 --service-objective GP_Gen5_2
+```
+
+Another option is to run the `azure-create-sql-db.sh` script in the `./databases` folder. The script uses the ARM template available in the same folder to create a server and a `todo_vw` database.
+
+Make sure you have the firewall configured to allow your machine to access Azure SQL:
+
+```
+az sql server firewall-rule create --resource-group <resource-group> --server <server-name> --name AllowMyClientIP_1 --start-ip-address <your_public_ip> --end-ip-address <your_public_ip>
+```
+
+you can get your public IP from here, for example: https://ifconfig.me/
+
+## Deploy the database
+
+Database is deployed using [DbUp](http://dbup.github.io/). Switch to the `./database/deploy` folder and create new `.env` file containing the connection string to the created Azure SQL database. You can use the provide `.env.template` as a guide. The connection string look like:
+
+```
+SERVER=<my-server>.database.windows.net;DATABASE=todo_v2;UID=<my_user_id>;PWD=<my_user_password>;
+```
+
+replace the placeholder with the correct value for your database, username and password and you're good to go. Make sure the database user specified in the connection string has enough permission to create objects (for example, make sure is a server administrator or in the db_owner database role).
+
+Please note that using the server administrator login is not recommended as way to powerful. If you are testing this on a sample server that you'll not use for production purposes, that shouldn't be an issue. But if want to be on the safe side and implement a correct security process you can create a user that will be used only for running the deployment script:
+
+```
+create user [deployment_user] with password = '<a_strong_password>';
+go
+
+alter role [db_owner] add member [deployment_user]
+go
+```
+
+Once you have configured the connection string, you can deploy the database objects:
+
+
+```
+cd ./database/deploy
+dotnet run
+```
+
+you will see something like: 
+
+```
+Deploying database: todo_v2
+Testing connection...
+Starting deployment...
+Beginning database upgrade
+Checking whether journal table exists..
+Journal table does not exist
+Executing Database Server script '01-create-objects.sql'
+Checking whether journal table exists..
+Creating the [dbo].[$__dbup_journal] table
+The [dbo].[$__dbup_journal] table has been created
+Upgrade successful
+Success!
+```
+
+Database has been deployed successfully!
+
 ## Test solution locally
 
-Before starting the solution locally, you have to configure the Azure Function that is used to provide the backed API. In the `./api` folder create a `local.settings.json` file starting from the provided template. To run Azure Functions locally, you also need a local Azure Storage emulator. You can use [Azurite](https://docs.microsoft.com/en-us/azure/storage/common/storage-use-azurite?tabs=visual-studio) that also has a VS Code extension.
+Before starting the solution locally, you have to configure the Azure Function that is used to provide the backed API. In the `./api` folder create a `local.settings.json` file starting from the provided template. All you have to do is update the connection string with the value correct for you solution. If have created the Azure SQL database as described above you'll have a database named `todo_v2`. Just make sure you add the correct server name in the `local.settings.json`. The database name, user login and password are already set in the template file to match those used in this repository and in the `./database/sql/01-create-objects.sql` file.
+
+To run Azure Functions locally, you also need a local Azure Storage emulator. You can use [Azurite](https://docs.microsoft.com/en-us/azure/storage/common/storage-use-azurite?tabs=visual-studio) that also has a VS Code extension.
 
 Make sure Azurite is running and then start the Azure Static Web App emulator:
 
@@ -110,16 +185,52 @@ The GitHub Token is needed as Azure Static Web App will create a GitHub action i
 
 Run the `./azure-deploy.sh` script and the Azure Static Web app will be deployed in specified resource group. You can run the script using [WSL](https://docs.microsoft.com/en-us/windows/wsl/), or Linux or [Azure Cloud Shell](https://azure.microsoft.com/en-us/features/cloud-shell/).
 
-## Run the solution on Azure
+### Adding the database to the CI/CD pipeline
 
 Once the deployment script has finished, you can go to the created Azure Static Web App in the Azure Portal and you can see it as been connected to the specified GitHub repository. Azure Static Web App has also created a new workflow in the GitHub repository that uses GitHub Actions to define the CI/CD pipeline that will build and publish the website every time a commit is pushed to the repo.
 
-An example of the Azure Static Web App url you'll get is something like:
+The generated GitHub Action doesn't know that we are using a database to store to-do list data, so we need to add the database deployment to the GitHub Action manually. No big deal, is a very small change. First of all you have to create a new [GitHub secrets](https://docs.github.com/en/actions/security-guides/encrypted-secrets):
 
-https://victorious-rock-01b2b501e.azurestaticapps.net/ 
+- AZURE_SQL_CONNECTION_STRING
 
-The first time you'll visit the URL you might not see any to-do item, even if a couple are already inserted in the in-memory list as an example. This is due the fact that the Azure Function running behind the scenes can take several seconds to start up the first time.
+The `AZURE_SQL_CONNECTION_STRING` is the connection string that can be used to deploy the database. You can use the same connection string used for deploying the database objects. You can find it in the `./database/deploy/.env` file.
+
+Then you have to add the following code, just before the `Build And Deploy` step, to the file you'll find in `./.github/workflow`:
+
+```yaml
+- name: Setup .NET Core
+  uses: actions/setup-dotnet@v1
+  with:
+    dotnet-version: '5.0.x' 
+- name: Deploy Database
+  working-directory: ./database/deploy
+  env: 
+    ConnectionString: ${{ secrets.AZURE_SQL_CONNECTION_STRING }}    
+  run: dotnet build && dotnet run      
+```
+
+The file `./.github/workflow/azure-static-web-apps.yml.sample` shows an example of how the yaml should look like. Commit and push the changes and the deployment will start again, this time deploying also the database objects.
+
+If you also want to deploy the Azure SQL server and database within the same pipeline, you can do so by using the provided ARM template `./database/azure-sql-db.arm.json` and the [Deploy ARM GitHub Action](https://github.com/Azure/arm-deploy).
+
+## Run the solution on Azure
+
+Once deployment is done, you'll have the Azure Static Web App ready. An example of the Azure Static Web App url you'll get is something like:
+
+https://mango-plant-0020f4110.azurestaticapps.net
+
+The first time you'll visit the URL you might not see any to-do item, even if a couple are already inserted in the created sample database. This is due the fact that the Azure Function running behind the scenes can take several seconds to start up the first time. Give it a couple of retry and they you'll be able to see two to-do items.
+
+Congratulations you have a fully working full-stack solution!
 
 ## Next steps
 
 Now that the solution is working nicely, it is time to add the database to the picture. Branch 2.0 will guide you in doing that.
+
+## Troubleshooting
+
+I've tested everything with .NET Core 5.0. If something doesn't work make sure you have .NET Core SDK installed and you set .NET 5.0 as the runtime to use, creating a `global.json` in the root sample folder:
+
+```
+dotnet new globaljson --sdk-version 5.0.403
+```

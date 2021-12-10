@@ -10,43 +10,49 @@ using Newtonsoft.Json;
 using Newtonsoft.Json.Linq;
 using System.Collections.Generic;
 using System.Linq;
+using System.Data;
+using Microsoft.Data.SqlClient;
+using Dapper;
 
 namespace api
 {
-    public class ToDo
-    {
-        public int Id;
-        public string Title;
-        public bool Completed;
-    }    
-
     public static class ToDoHandler
-    {
-        static List<ToDo> _db = new List<ToDo>();
-        static int _nextId = 1;
+    {        
+        private static async Task<JToken> ExecuteProcedure(string verb, JToken payload)
+        {
+            JToken result = null;
 
-        static ToDoHandler()
-        {            
-            _db.Add(new ToDo { Id=1, Title="Hello World!", Completed=true } );
-            _db.Add(new ToDo { Id=2, Title="World, hello!", Completed=false } );
-            _nextId = 3;
+            using (var conn = new SqlConnection(Environment.GetEnvironmentVariable("AzureSQL")))
+            {
+                DynamicParameters parameters = new DynamicParameters();
+                if (payload != null) parameters.Add("payload", payload.ToString());                
+
+                string stringResult = await conn.ExecuteScalarAsync<string>(
+                    sql: $"web.{verb}_todo",
+                    param: parameters,
+                    commandType: CommandType.StoredProcedure
+                );
+
+                if (!string.IsNullOrEmpty(stringResult)) result = JToken.Parse(stringResult);
+            }
+
+            return result;            
         }
-        
+
         [FunctionName("Get")]
         public static async Task<IActionResult> Get(
             [HttpTrigger(AuthorizationLevel.Anonymous, "get", Route = "todo/{id:int?}")] HttpRequest req, 
             ILogger log, 
             int? id)
         {
-            if (id == null) 
-                return new OkObjectResult(_db);           
+            var payload = id.HasValue ? new JObject { ["id"] = id.Value } : null;
+            
+            var result = await ExecuteProcedure("get", payload);    
 
-            var t = _db.Find(i => i.Id == id);            
-            
-            if (t == null)
-                return await Task.FromResult<IActionResult>(new NotFoundResult());
-            
-            return await Task.FromResult<IActionResult>(new OkObjectResult(t));
+            if (result == null) 
+                return new NotFoundResult();
+
+            return new OkObjectResult(result);  
         }
 
         [FunctionName("Post")]
@@ -54,16 +60,13 @@ namespace api
             [HttpTrigger(AuthorizationLevel.Anonymous, "post", Route = "todo")] HttpRequest req, 
             ILogger log)
         {
-            string requestBody = await new StreamReader(req.Body).ReadToEndAsync();
-            ToDo data = JsonConvert.DeserializeObject<ToDo>(requestBody);
+            string body = await new StreamReader(req.Body).ReadToEndAsync();
             
-            if (data.Id == 0) {
-                data.Id = _nextId;
-                _nextId += 1;
-            }
-            _db.Add(data);
+            var payload = JObject.Parse(body);
+
+            var result = await ExecuteProcedure("post", payload);
             
-            return new OkObjectResult(data);
+            return new OkObjectResult(result);
         }
 
         [FunctionName("Patch")]
@@ -72,18 +75,20 @@ namespace api
             ILogger log,
             int id)
         {
-            var t = _db.Find(i => i.Id == id);
+            string body = await new StreamReader(req.Body).ReadToEndAsync();
             
-            if (t == null)
-                return await Task.FromResult<IActionResult>(new NotFoundResult());
+            var payload = new JObject
+            {
+                ["id"] = id,
+                ["todo"] = JObject.Parse(body)
+            };
 
-            string requestBody = await new StreamReader(req.Body).ReadToEndAsync();
-            ToDo data = JsonConvert.DeserializeObject<ToDo>(requestBody);
-            
-            t.Title = data.Title ?? t.Title;
-            t.Completed = data.Completed != false ? data.Completed : t.Completed;
-            
-            return await Task.FromResult<IActionResult>(new OkObjectResult(t));
+            JToken result = await ExecuteProcedure("patch", payload);   
+
+            if (result == null) 
+                return new NotFoundResult();
+
+            return new OkObjectResult(result);
         }
 
         [FunctionName("Delete")]
@@ -92,14 +97,14 @@ namespace api
             ILogger log,
             int id)
         {
-            var t = _db.Find(i => i.Id == id);
-
-            if (t == null)
-                return await Task.FromResult<IActionResult>(new NotFoundResult());
+            var payload = new JObject { ["id"] = id };
             
-            _db.Remove(t);
+            var result = await ExecuteProcedure("delete", payload);    
 
-            return await Task.FromResult<IActionResult>(new OkObjectResult(t));
+            if (result == null) 
+                return new NotFoundResult();
+
+            return new OkObjectResult(result);  
         }
     }
 }
