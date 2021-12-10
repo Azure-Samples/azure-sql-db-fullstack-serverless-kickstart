@@ -22,8 +22,13 @@
         },
         "apiLocation": {
             "type": "string"
+        },
+        "azureSQL": {
+            "type": "securestring",
+            "metadata": {
+				"description": "Azure SQL database connection string"
+			}
         }
-
     },
     "resources": [
         {
@@ -43,7 +48,21 @@
             "sku": {
                 "Tier": "Free",
                 "Name": "Free"
-            }            
-        }
+            },
+            "resources": [
+                {
+                    "apiVersion": "2021-01-15",
+                    "name": "appsettings",
+                    "type": "config",
+                    "location": "[parameters('location')]",
+                    "properties": {
+                        "AzureSQL": "[parameters('azureSQL')]"
+                    },
+                    "dependsOn": [
+                        "[resourceId('Microsoft.Web/staticSites', parameters('name'))]"
+                    ]
+                }
+            ]            
+        } 
     ]
 }
