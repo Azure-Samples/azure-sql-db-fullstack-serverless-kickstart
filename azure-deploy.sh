@@ -39,7 +39,7 @@ az deployment group create \
     location=$location \
     repositoryToken=$gitToken \
     repositoryUrl=$gitSource \
-    branch="v2.0" \
+    branch="v3.0" \
     appLocation="./client" \
     apiLocation="./api" \
     azureSQL="$azureSQL"
