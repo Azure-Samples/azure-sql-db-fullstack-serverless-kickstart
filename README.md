@@ -52,12 +52,12 @@ To run this sample in your subscription, make sure to fork the repository into y
 This repo has three branches that shows the development at different stages
 
 - 1.0: First version, no database support
-- 2.0: [This branch] Database support added
-- 3.0: Authentication and Authorization 
+- 2.0: Database support added
+- 3.0: [This branch] Authentication and Authorization 
 
-### V2.0 Notes
+### V3.0 Notes
 
-In this branch the backend REST API service is modified so that the to-do list can be saved an manged using an Azure SQL database. Communication with the database is done using JSON too, as Azure SQL support [JSON natively](https://docs.microsoft.com/en-us/sql/relational-databases/json/json-data-sql-server?view=sql-server-ver15). 
+In this branch the backend REST API service and the database are modified so that a user can be authenticated and they will see and manage only the to-do items they have created. Anonymous access is also allowed, and all to-do items created while not authenticated will be visible and manageable by anyone. Authentication is done via the Azure Static Web Apps reverse proxy, that [takes care of all the complexities](https://docs.microsoft.com/en-us/azure/static-web-apps/authentication-authorization) of OAuth2 for you. The Vue web client has been also updated to provide login and logoff capabilities. 
 
 ## Folder Structure
 
@@ -93,7 +93,7 @@ az sql server create -n <server-name> -l <location> --admin-user <admin-user> --
 Create a new Azure SQL database:
 
 ```sh
-az sql db create -g <resource-group> -s <server-name> -n todo_v2 --service-objective GP_Gen5_2
+az sql db create -g <resource-group> -s <server-name> -n todo_v3 --service-objective GP_Gen5_2
 ```
 
 Another option is to run the `azure-create-sql-db.sh` script in the `./databases` folder. The script uses the ARM template available in the same folder to create a server and a `todo_vw` database.
@@ -111,7 +111,7 @@ you can get your public IP from here, for example: https://ifconfig.me/
 Database is deployed using [DbUp](http://dbup.github.io/). Switch to the `./database/deploy` folder and create new `.env` file containing the connection string to the created Azure SQL database. You can use the provide `.env.template` as a guide. The connection string look like:
 
 ```
-SERVER=<my-server>.database.windows.net;DATABASE=todo_v2;UID=<my_user_id>;PWD=<my_user_password>;
+SERVER=<my-server>.database.windows.net;DATABASE=todo_v3;UID=<my_user_id>;PWD=<my_user_password>;
 ```
 
 replace the placeholder with the correct value for your database, username and password and you're good to go. Make sure the database user specified in the connection string has enough permission to create objects (for example, make sure is a server administrator or in the db_owner database role).
@@ -137,7 +137,7 @@ dotnet run
 you will see something like: 
 
 ```
-Deploying database: todo_v2
+Deploying database: todo_v3
 Testing connection...
 Starting deployment...
 Beginning database upgrade
@@ -147,6 +147,10 @@ Executing Database Server script '01-create-objects.sql'
 Checking whether journal table exists..
 Creating the [dbo].[$__dbup_journal] table
 The [dbo].[$__dbup_journal] table has been created
+Executing Database Server script '02-update-todo-table.sql'
+Executing Database Server script '03-update-stored-procs.sql'
+Executing Database Server script '04-move-to-long-user-id.sql'
+Executing Database Server script '05-update-stored-procs-support-long-user-id.sql'
 Upgrade successful
 Success!
 ```
@@ -155,7 +159,7 @@ Database has been deployed successfully!
 
 ## Test solution locally
 
-Before starting the solution locally, you have to configure the Azure Function that is used to provide the backed API. In the `./api` folder create a `local.settings.json` file starting from the provided template. All you have to do is update the connection string with the value correct for you solution. If have created the Azure SQL database as described above you'll have a database named `todo_v2`. Just make sure you add the correct server name in the `local.settings.json`. The database name, user login and password are already set in the template file to match those used in this repository and in the `./database/sql/01-create-objects.sql` file.
+Before starting the solution locally, you have to configure the Azure Function that is used to provide the backed API. In the `./api` folder create a `local.settings.json` file starting from the provided template. All you have to do is update the connection string with the value correct for you solution. If have created the Azure SQL database as described above you'll have a database named `todo_v3`. Just make sure you add the correct server name in the `local.settings.json`. The database name, user login and password are already set in the template file to match those used in this repository and in the `./database/sql/01-create-objects.sql` file.
 
 To run Azure Functions locally, you also need a local Azure Storage emulator. You can use [Azurite](https://docs.microsoft.com/en-us/azure/storage/common/storage-use-azurite?tabs=visual-studio) that also has a VS Code extension.
 
@@ -174,6 +178,8 @@ Azure Static Web Apps emulator started at http://localhost:4280. Press CTRL+C to
 ```
 
 everything will be up and running. Go the the indicated URL and you'll see the ToDo App. Go an play with it, it will work perfectly, having the Vue.js frontend calling the REST API provided by the Azure Function and storing the to-do list in a List object. 
+
+You can also try to login and be an authenticated user. Static Web Apps will provide a mock of the real authentication process (done using the GitHub authentication provider, in this sample), so you can have a full experience also when debugging locally.
 
 ## Deploy the solution on Azure
 
