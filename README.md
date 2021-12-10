@@ -223,7 +223,7 @@ If you also want to deploy the Azure SQL server and database within the same pip
 
 Once deployment is done, you'll have the Azure Static Web App ready. An example of the Azure Static Web App url you'll get is something like:
 
-https://mango-plant-0020f4110.azurestaticapps.net
+https://gentle-bush-039d94710.azurestaticapps.net
 
 The first time you'll visit the URL you might not see any to-do item, even if a couple are already inserted in the created sample database. This is due the fact that the Azure Function running behind the scenes can take several seconds to start up the first time. Give it a couple of retry and they you'll be able to see two to-do items.
 
