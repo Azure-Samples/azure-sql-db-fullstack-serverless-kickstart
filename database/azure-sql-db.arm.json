@@ -58,7 +58,7 @@
                 "[resourceId('Microsoft.Sql/servers', parameters('databaseServer'))]"
             ],
             "sku": {
-                "name": "HS_Gen5",
+                "name": "GP_Gen5",
                 "capacity": 2
             },
             "properties":{

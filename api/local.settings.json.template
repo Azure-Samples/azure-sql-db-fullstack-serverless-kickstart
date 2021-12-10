@@ -3,6 +3,6 @@
     "Values": {
         "AzureWebJobsStorage": "UseDevelopmentStorage=true",
         "FUNCTIONS_WORKER_RUNTIME": "dotnet",
-        "AzureSQL": "Server=tcp:.database.windows.net,1433;Initial Catalog=todo;Persist Security Info=False;User ID=webapp;Password=Super_Str0ng*P4ZZword!;MultipleActiveResultSets=False;Encrypt=True;TrustServerCertificate=False;Connection Timeout=30;"
+        "AzureSQL": "Server=tcp:.database.windows.net,1433;Initial Catalog=todo_v2;Persist Security Info=False;User ID=webapp;Password=Super_Str0ng*P4ZZword!;MultipleActiveResultSets=False;Encrypt=True;TrustServerCertificate=False;Connection Timeout=30;"
     }
 }
