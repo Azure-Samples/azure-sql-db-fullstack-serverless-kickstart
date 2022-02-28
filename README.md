@@ -68,10 +68,10 @@ In this branch the solution will have a full working front-end, sending REST req
 
 Make sure you have [Node](https://nodejs.org/en/download/) as it is required by Azure Functions Core Tools and also by Azure Static Web Apps. The backend API will be using .NET Core, but Node is needed to have the local development experience running nicely.
 
-Also install the [Azure Function Core Tools v3](https://www.npmjs.com/package/azure-functions-core-tools):
+Also install the [Azure Function Core Tools v4](https://www.npmjs.com/package/azure-functions-core-tools):
 
 ```sh
-npm i -g azure-functions-core-tools@3 --unsafe-perm true
+npm i -g azure-functions-core-tools@4 --unsafe-perm true
 ```
 
 Also install the [Azure Static Web Apps CLI](https://github.com/azure/static-web-apps-cli):
