@@ -78,7 +78,7 @@ npm i -g azure-functions-core-tools@4 --unsafe-perm true
 Also install the [Azure Static Web Apps CLI](https://github.com/azure/static-web-apps-cli):
 
 ```sh
-npm install -g @azure/static-web-apps-cli`
+npm install -g @azure/static-web-apps-cli
 ```
 
 ## Create the Azure SQL database
@@ -96,7 +96,7 @@ Create a new Azure SQL database:
 az sql db create -g <resource-group> -s <server-name> -n todo_v2 --service-objective GP_Gen5_2
 ```
 
-Another option is to run the `azure-create-sql-db.sh` script in the `./databases` folder. The script uses the ARM template available in the same folder to create a server and a `todo_vw` database.
+Another option is to run the `azure-create-sql-db.sh` script in the `./databases` folder. The script uses the ARM template available in the same folder to create a server and a `todo_v2` database.
 
 Make sure you have the firewall configured to allow your machine to access Azure SQL:
 
