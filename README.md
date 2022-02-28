@@ -157,7 +157,7 @@ Database has been deployed successfully!
 
 Before starting the solution locally, you have to configure the Azure Function that is used to provide the backed API. In the `./api` folder create a `local.settings.json` file starting from the provided template. All you have to do is update the connection string with the value correct for you solution. If have created the Azure SQL database as described above you'll have a database named `todo_v2`. Just make sure you add the correct server name in the `local.settings.json`. The database name, user login and password are already set in the template file to match those used in this repository and in the `./database/sql/01-create-objects.sql` file.
 
-To run Azure Functions locally, you also need a local Azure Storage emulator. You can use [Azurite](https://docs.microsoft.com/en-us/azure/storage/common/storage-use-azurite?tabs=visual-studio) that also has a VS Code extension.
+To run Azure Functions locally, you might also need a local Azure Storage emulator. You can use [Azurite](https://docs.microsoft.com/en-us/azure/storage/common/storage-use-azurite?tabs=visual-studio) that also has a VS Code extension.
 
 Make sure Azurite is running and then start the Azure Static Web App emulator:
 
@@ -185,6 +185,8 @@ The GitHub Token is needed as Azure Static Web App will create a GitHub action i
 
 Make sure you set the variable `gitSource` to the address of your forked repository.
 
+If you are using the `.env` file you created in `v1.0`, make sure to add the connection string to Azure SQL. You can use the same connection string you used in the `./api/local.setting.json` file to test the solution locally.
+
 Run the `./azure-deploy.sh` script and the Azure Static Web app will be deployed in specified resource group. You can run the script using [WSL](https://docs.microsoft.com/en-us/windows/wsl/), or Linux or [Azure Cloud Shell](https://azure.microsoft.com/en-us/features/cloud-shell/).
 
 ### Adding the database to the CI/CD pipeline
@@ -203,7 +205,7 @@ Then you have to add the following code, just before the `Build And Deploy` step
 - name: Setup .NET Core
   uses: actions/setup-dotnet@v1
   with:
-    dotnet-version: '5.0.x' 
+    dotnet-version: '6.0.x' 
 - name: Deploy Database
   working-directory: ./database/deploy
   env: 
