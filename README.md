@@ -185,7 +185,7 @@ The GitHub Token is needed as Azure Static Web App will create a GitHub action i
 
 Make sure you set the variable `gitSource` to the address of your forked repository.
 
-If you are using the `.env` file you created in `v1.0`, make sure to add the connection string to Azure SQL. You can use the same connection string you used in the `./api/local.setting.json` file to test the solution locally.
+If you are using the `.env` file you created in `v1.0`, make sure to add the connection string to Azure SQL by creating and setting the `azureSQL` variable. You can use the same connection string you used in the `./api/local.setting.json` file to test the solution locally.
 
 Run the `./azure-deploy.sh` script and the Azure Static Web app will be deployed in specified resource group. You can run the script using [WSL](https://docs.microsoft.com/en-us/windows/wsl/), or Linux or [Azure Cloud Shell](https://azure.microsoft.com/en-us/features/cloud-shell/).
 
