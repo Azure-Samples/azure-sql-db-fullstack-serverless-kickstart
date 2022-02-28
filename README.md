@@ -108,6 +108,8 @@ The first time the script will run will create an empty `.env` file in the sampl
 
 The GitHub Token is needed as Azure Static Web App will create a GitHub action in your repository in order to automate deployment of the solution to Azure. That is right: every time you'll push a code change to your code main code branch, the application will also be re-built and deployed in Azure.
 
+Make sure you set the variable `gitSource` to the address of your forked repository.
+
 Run the `./azure-deploy.sh` script and the Azure Static Web app will be deployed in specified resource group. You can run the script using [WSL](https://docs.microsoft.com/en-us/windows/wsl/), or Linux or [Azure Cloud Shell](https://azure.microsoft.com/en-us/features/cloud-shell/).
 
 ## Run the solution on Azure
