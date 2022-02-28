@@ -1,4 +1,4 @@
-create schema [web];
+create schema [web] authorization [dbo];
 go
 
 create user [webapp] with password = 'Super_Str0ng*P4ZZword!'
