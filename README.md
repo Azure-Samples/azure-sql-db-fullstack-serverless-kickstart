@@ -69,10 +69,10 @@ In this branch the backend REST API service is modified so that the to-do list c
 
 Make sure you have [Node](https://nodejs.org/en/download/) as it is required by Azure Functions Core Tools and also by Azure Static Web Apps. The backend API will be using .NET Core, but Node is needed to have the local development experience running nicely.
 
-Also install the [Azure Function Core Tools v3](https://www.npmjs.com/package/azure-functions-core-tools):
+Also install the [Azure Function Core Tools v4](https://www.npmjs.com/package/azure-functions-core-tools):
 
 ```sh
-npm i -g azure-functions-core-tools@3 --unsafe-perm true
+npm i -g azure-functions-core-tools@4 --unsafe-perm true
 ```
 
 Also install the [Azure Static Web Apps CLI](https://github.com/azure/static-web-apps-cli):
@@ -182,6 +182,8 @@ Now that you know everything works fine, you can deploy the solution to Azure. Y
 The first time the script will run will create an empty `.env` file in the sample root folder that you have to fill out. Aside from the usual Azure information like the resource group, the location and the app name, you also have to provide a [GitHub Token](https://docs.microsoft.com/en-us/azure/static-web-apps/publish-azure-resource-manager?tabs=azure-cli#create-a-github-personal-access-token).
 
 The GitHub Token is needed as Azure Static Web App will create a GitHub action in your repository in order to automate deployment of the solution to Azure. That is right: every time you'll push a code change to your code main code branch, the application will also be re-built and deployed in Azure.
+
+Make sure you set the variable `gitSource` to the address of your forked repository.
 
 Run the `./azure-deploy.sh` script and the Azure Static Web app will be deployed in specified resource group. You can run the script using [WSL](https://docs.microsoft.com/en-us/windows/wsl/), or Linux or [Azure Cloud Shell](https://azure.microsoft.com/en-us/features/cloud-shell/).
 
