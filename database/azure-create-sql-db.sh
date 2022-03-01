@@ -20,7 +20,7 @@ az group create \
 echo "Deploying Azure SQL Database...";
 azureSQLDB="todo_v3"
 azureSQLServer=$(az deployment group create \
-    --name "sql-db-deploy-2.0" \
+    --name "sql-db-deploy-3.0" \
     --resource-group $resourceGroup \
     --template-file azure-sql-db.arm.json \
     --parameters \
