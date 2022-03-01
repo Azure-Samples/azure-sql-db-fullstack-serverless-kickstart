@@ -231,10 +231,3 @@ Congratulations you have a fully working full-stack solution!
 
 Now that the solution is working nicely, it is time to add the database to the picture. Branch 2.0 will guide you in doing that.
 
-## Troubleshooting
-
-I've tested everything with .NET Core 5.0. If something doesn't work make sure you have .NET Core SDK installed and you set .NET 5.0 as the runtime to use, creating a `global.json` in the root sample folder:
-
-```
-dotnet new globaljson --sdk-version 5.0.403
-```
