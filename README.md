@@ -96,7 +96,7 @@ Create a new Azure SQL database:
 az sql db create -g <resource-group> -s <server-name> -n todo_v3 --service-objective GP_Gen5_2
 ```
 
-Another option is to run the `azure-create-sql-db.sh` script in the `./databases` folder. The script uses the ARM template available in the same folder to create a server and a `todo_v2` database.
+Another option is to run the `azure-create-sql-db.sh` script in the `./databases` folder. The script uses the ARM template available in the same folder to create a server and a `todo_v3` database.
 
 Make sure you have the firewall configured to allow your machine to access Azure SQL:
 
@@ -127,7 +127,6 @@ go
 ```
 
 Once you have configured the connection string, you can deploy the database objects:
-
 
 ```
 cd ./database/deploy
@@ -236,11 +235,3 @@ Congratulations you have a fully working full-stack solution!
 ## Next steps
 
 Now that the solution is working nicely, it is time to add the database to the picture. Branch 2.0 will guide you in doing that.
-
-## Troubleshooting
-
-I've tested everything with .NET Core 5.0. If something doesn't work make sure you have .NET Core SDK installed and you set .NET 5.0 as the runtime to use, creating a `global.json` in the root sample folder:
-
-```
-dotnet new globaljson --sdk-version 5.0.403
-```
