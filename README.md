@@ -232,7 +232,6 @@ The first time you'll visit the URL you might not see any to-do item, even if a 
 
 Congratulations you have a fully working full-stack solution!
 
-## Next steps
+## Done
 
-Now that the solution is working nicely, it is time to add the database to the picture. Branch 2.0 will guide you in doing that.
-
+The solution is now complete, providing everything needed to serve users!
