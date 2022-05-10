@@ -83,8 +83,7 @@ npm install -g @azure/static-web-apps-cli
 
 ## Create the Azure SQL database
 
-If you don't have a Azure SQL server already, you can create one (no additional costs for a server) running the following [AZ CLI](https://docs.microsoft.com/en-us/cli/azure/) command (via [WSL](https://docs.microsoft.com/en-us/windows/wsl/), or Linux or [Azure Cloud Shell](https://azure.microsoft.com/en-us/features/cloud-shell/)):
-
+If you don't have a Azure SQL server already, you can create one (no additional costs for a server) running the following [AZ CLI](https://docs.microsoft.com/en-us/cli/azure/) command:
 
 ```sh
 az sql server create -n <server-name> -l <location> --admin-user <admin-user> --admin-password <admin-password> -g <resource-group>
@@ -114,9 +113,9 @@ Database is deployed using [DbUp](http://dbup.github.io/). Switch to the `./data
 SERVER=<my-server>.database.windows.net;DATABASE=todo_v3;UID=<my_user_id>;PWD=<my_user_password>;
 ```
 
-replace the placeholder with the correct value for your database, username and password and you're good to go. Make sure the database user specified in the connection string has enough permission to create objects (for example, make sure is a server administrator or in the db_owner database role).
+Replace the placeholder with the correct value for your database, username and password and you're good to go. Make sure the database user specified in the connection string has enough permission to create objects (for example, make sure is a server administrator or in the db_owner database role).
 
-Please note that using the server administrator login is not recommended as way to powerful. If you are testing this on a sample server that you'll not use for production purposes, that shouldn't be an issue. But if want to be on the safe side and implement a correct security process you can create a user that will be used only for running the deployment script:
+Please note that using the server administrator login is not recommended as it is way to powerful. If you are testing this on a sample server that you'll not use for production purposes, that shouldn't be an issue. If you want to be on the safe side and implement a correct security process, then you can create a user that will be used only for running the deployment script:
 
 ```
 create user [deployment_user] with password = '<a_strong_password>';
@@ -182,7 +181,7 @@ You can also try to login and be an authenticated user. Static Web Apps will pro
 
 ## Deploy the solution on Azure
 
-Now that you know everything works fine, you can deploy the solution to Azure. You can take advantage of the script `./azure-deploy.sh` that will deploy the Azure Static Web app for you.
+Now that you know everything works fine, you can deploy the solution to Azure. You can take advantage of the script `./azure-deploy.mjs` that will deploy the Azure Static Web app for you.
 
 The first time the script will run will create an empty `.env` file in the sample root folder that you have to fill out. Aside from the usual Azure information like the resource group, the location and the app name, you also have to provide a [GitHub Token](https://docs.microsoft.com/en-us/azure/static-web-apps/publish-azure-resource-manager?tabs=azure-cli#create-a-github-personal-access-token).
 
@@ -192,7 +191,7 @@ Make sure you set the variable `gitSource` to the address of your forked reposit
 
 If you are using the `.env` file you created in `v1.0`, make sure to add the connection string to Azure SQL by creating and setting the `azureSQL` variable. You can use the same connection string you used in the `./api/local.setting.json` file to test the solution locally.
 
-Run the `./azure-deploy.sh` script and the Azure Static Web app will be deployed in specified resource group. You can run the script using [WSL](https://docs.microsoft.com/en-us/windows/wsl/), or Linux or [Azure Cloud Shell](https://azure.microsoft.com/en-us/features/cloud-shell/).
+Run `node azure-deploy.mjs` script and the Azure Static Web app will be deployed in specified resource group.
 
 ### Adding the database to the CI/CD pipeline
 
