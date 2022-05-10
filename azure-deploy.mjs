@@ -63,7 +63,7 @@ async function main() {
         `branch="${BRANCH}"`,
         `appLocation="${CLIENT_DIR}"`,
         `apiLocation="${API_DIR}"`,
-        `azureSQL="$azureSQL"`
+        `azureSQL="${env["azureSQL"]}`,
     ].join(" "));
 
     console.log("Getting Static Web App...");
