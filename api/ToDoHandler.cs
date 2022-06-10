@@ -15,11 +15,51 @@ using Microsoft.Data.SqlClient;
 using Dapper;
 using System.Security.Claims;
 using System.Text;
+using Polly;
+using System.ComponentModel;
 
 namespace api
 {
     public static class ToDoHandler
     {
+        // Error list created from: 
+        // - https://github.com/dotnet/efcore/blob/main/src/EFCore.SqlServer/Storage/Internal/SqlServerTransientExceptionDetector.cs
+        // - https://docs.microsoft.com/en-us/dotnet/api/microsoft.data.sqlclient.sqlconfigurableretryfactory?view=sqlclient-dotnet-standard-4.1
+        // - https://docs.microsoft.com/en-us/azure/sql-database/sql-database-develop-error-messages
+        // Manually added also
+        // 0, 18456
+        private static List<int> _transientErrors = new List<int> {
+            233, 997, 921, 669, 617, 601, 121, 64, 20, 0, 53, 258,
+            1203, 1204, 1205, 1222, 1221,
+            1807,
+            3966, 3960, 3935,
+            4060, 4221, 4891,
+            8651, 8645,
+            9515,
+            14355,
+            10929, 10928, 10060, 10054, 10053, 10936, 10929, 10928, 10922, 10051, 10065,
+            11001,
+            17197,
+            18456,
+            20041,
+            41839, 41325, 41305, 41302, 41301, 40143, 40613, 40501, 40540, 40197, 49918, 49919, 49920
+        };
+
+        private static bool CheckIfTransientError(Exception ex)
+        {
+            if (ex is SqlException sqlException)
+            {
+                foreach (SqlError err in sqlException.Errors)
+                {
+                    if (_transientErrors.Contains(err.Number)) return true;
+                }
+
+                return false;
+            }
+
+            return ex is TimeoutException;
+        }
+
         private class ClientPrincipal
         {
             public string IdentityProvider { get; set; }
@@ -45,32 +85,50 @@ namespace api
             return principal;
         }
 
-        private static async Task<JToken> ExecuteProcedure(string verb, JToken payload, JToken context)
-        {
-            JToken result = null;            
+        private static async Task<JToken> ExecuteProcedure(string verb, JToken payload, JToken context, ILogger log)
+        {            
+            var polly = Policy
+                .Handle<SqlException>(ex => CheckIfTransientError(ex))
+                .Or<TimeoutException>()
+                .OrInner<Win32Exception>(ex => CheckIfTransientError(ex))
+                .WaitAndRetryAsync(5, retryAttempt => TimeSpan.FromSeconds(Math.Pow(2, retryAttempt)),
+                    (exception, timeSpan, retryCount, context) =>
+                    {
+                        var details = string.Empty;
+                        if (exception is SqlException) {
+                            var sx = exception as SqlException;
+                            details = $" [SQL Error: {sx.Number}]";
+                        }
+                        log.LogInformation($"WaitAndRetry called {retryCount} times, next retry in: {timeSpan}). Reason: {exception.GetType().Name}{details}: {exception.Message}");
+                    });
 
-            using (var conn = new SqlConnection(Environment.GetEnvironmentVariable("AzureSQL")))
-            {
-                DynamicParameters parameters = new DynamicParameters();
-                
-                if (payload != null) 
-                    parameters.Add("payload", payload.ToString());
-                
-                if (context != null) 
-                    parameters.Add("context", context.ToString()); 
-                else 
-                    parameters.Add("context", "{}");
+            var runProcedure = async () => {
+                using (var conn = new SqlConnection(Environment.GetEnvironmentVariable("AzureSQL")))
+                {
+                    DynamicParameters parameters = new DynamicParameters();
+                    
+                    if (payload != null) 
+                        parameters.Add("payload", payload.ToString());
+                    
+                    if (context != null) 
+                        parameters.Add("context", context.ToString()); 
+                    else 
+                        parameters.Add("context", "{}");
 
-                string stringResult = await conn.ExecuteScalarAsync<string>(
-                    sql: $"web.{verb}_todo",
-                    param: parameters,
-                    commandType: CommandType.StoredProcedure
-                );
+                    string stringResult = await conn.ExecuteScalarAsync<string>(
+                        sql: $"web.{verb}_todo",
+                        param: parameters,
+                        commandType: CommandType.StoredProcedure
+                    );
 
-                if (!string.IsNullOrEmpty(stringResult)) result = JToken.Parse(stringResult);
-            }
+                    if (!string.IsNullOrEmpty(stringResult)) 
+                        return JToken.Parse(stringResult); 
+                    else 
+                        return null;
+                }
+            };
 
-            return result;
+            return await polly.ExecuteAsync(async () => await runProcedure());
         }
 
         [FunctionName("Get")]
@@ -83,7 +141,7 @@ namespace api
 
             var payload = id.HasValue ? new JObject { ["id"] = id.Value } : null;
 
-            var result = await ExecuteProcedure("get", payload, context);
+            var result = await ExecuteProcedure("get", payload, context, log);
 
             if (result == null)
                 return new NotFoundResult();
@@ -102,7 +160,7 @@ namespace api
 
             var payload = JObject.Parse(body);
 
-            var result = await ExecuteProcedure("post", payload, context);
+            var result = await ExecuteProcedure("post", payload, context, log);
 
             return new OkObjectResult(result);
         }
@@ -123,7 +181,7 @@ namespace api
                 ["todo"] = JObject.Parse(body)
             };
 
-            JToken result = await ExecuteProcedure("patch", payload, context);
+            JToken result = await ExecuteProcedure("patch", payload, context, log);
 
             if (result == null)
                 return new NotFoundResult();
@@ -141,7 +199,7 @@ namespace api
             
             var payload = new JObject { ["id"] = id };
 
-            var result = await ExecuteProcedure("delete", payload, context);
+            var result = await ExecuteProcedure("delete", payload, context, log);
 
             if (result == null)
                 return new NotFoundResult();

@@ -53,9 +53,10 @@ This repo has three branches that shows the development at different stages
 
 - 1.0: First version, no database support
 - 2.0: Database support added
-- 3.0: [This branch] Authentication and Authorization 
+- 3.0: Authentication and Authorization 
+- 4.0: [This Branch] Resilient connections using Polly
 
-### V3.0 Notes
+### V4.0 Notes
 
 In this branch the backend REST API service and the database are modified so that a user can be authenticated and they will see and manage only the to-do items they have created. Anonymous access is also allowed, and all to-do items created while not authenticated will be visible and manageable by anyone. Authentication is done via the Azure Static Web Apps reverse proxy, that [takes care of all the complexities](https://docs.microsoft.com/en-us/azure/static-web-apps/authentication-authorization) of OAuth2 for you. The Vue web client has been also updated to provide login and logoff capabilities. 
 
@@ -96,7 +97,7 @@ Create a new Azure SQL database:
 az sql db create -g <resource-group> -s <server-name> -n todo_v3 --service-objective GP_Gen5_2
 ```
 
-Another option is to run the `azure-create-sql-db.sh` script in the `./databases` folder. The script uses the ARM template available in the same folder to create a server and a `todo_v3` database.
+Another option is to run the `azure-create-sql-db.sh` script in the `./databases` folder. The script uses the ARM template available in the same folder to create a server and a `todo_v4` database.
 
 Make sure you have the firewall configured to allow your machine to access Azure SQL:
 

@@ -31,7 +31,7 @@ az group create \
 
 echo "Deploying Static Web App...";
 az deployment group create \
-  --name "swa-deploy-3.0" \
+  --name "swa-deploy-4.0" \
   --resource-group $resourceGroup \
   --template-file azure-deploy.arm.json \
   --parameters \
@@ -39,7 +39,7 @@ az deployment group create \
     location=$location \
     repositoryToken=$gitToken \
     repositoryUrl=$gitSource \
-    branch="v3.0" \
+    branch="v4.0" \
     appLocation="./client" \
     apiLocation="./api" \
     azureSQL="$azureSQL"
