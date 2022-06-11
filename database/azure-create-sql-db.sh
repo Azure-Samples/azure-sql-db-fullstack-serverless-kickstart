@@ -1,7 +1,7 @@
 #!/bin/bash
 set -euo pipefail
 
-# Load values from .env file or create it if it doesn't exists
+# Load values from .env file in the root folder
 FILE="../.env"
 if [[ -f $FILE ]]; then
 	echo "Loading from $FILE" 
