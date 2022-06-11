@@ -54,7 +54,8 @@ This repo has three branches that shows the development at different stages
 - 1.0: First version, no database support
 - 2.0: Database support added
 - 3.0: Authentication and Authorization 
-- 4.0: [This Branch] Resilient connections using Polly
+- 4.0: Resilient connections using Polly
+- 5.0: [This Branch] Deployment samples (imperative or declarative)
 
 ### V4.0 Notes
 
