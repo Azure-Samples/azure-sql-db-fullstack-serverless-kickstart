@@ -271,3 +271,4 @@ __blobstorage__/
 .env
 /database
 global.json
+log.txt

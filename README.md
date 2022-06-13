@@ -52,8 +52,6 @@ To run this sample in your subscription, make sure to fork the repository into y
 This repo has three branches that shows the development at different stages
 
 - 1.0: This branch
-- 2.0: Database support added
-- 3.0: Authentication and Authorization 
 
 ### V1.0 Notes
 
