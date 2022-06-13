@@ -58,6 +58,10 @@ This repo has three branches that shows the development at different stages
 
 ### V4.0 Notes
 
+Built on top of the V3.0, in this branch retry-logic is added so that if a connection to Azure SQL cannot be made or if a SQL query cannot be executed due to some transient error, the operation is automatically retried for up to 5 times, without returning any error to the end user.
+
+### V3.0 Notes
+
 In this branch the backend REST API service and the database are modified so that a user can be authenticated and they will see and manage only the to-do items they have created. Anonymous access is also allowed, and all to-do items created while not authenticated will be visible and manageable by anyone. Authentication is done via the Azure Static Web Apps reverse proxy, that [takes care of all the complexities](https://docs.microsoft.com/en-us/azure/static-web-apps/authentication-authorization) of OAuth2 for you. The Vue web client has been also updated to provide login and logoff capabilities. 
 
 ## Folder Structure
