@@ -18,9 +18,9 @@ az group create \
     -l $location
 
 echo "Deploying Azure SQL Database...";
-azureSQLDB="todo_v4"
+azureSQLDB="todo_v5"
 azureSQLServer=$(az deployment group create \
-    --name "sql-db-deploy-4.0" \
+    --name "sql-db-deploy-5.0" \
     --resource-group $resourceGroup \
     --template-file azure-sql-db.arm.json \
     --parameters \

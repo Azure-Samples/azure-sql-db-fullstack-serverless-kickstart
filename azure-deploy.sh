@@ -13,7 +13,7 @@ appName=""
 location=""
 
 # Connection string
-azureSQL='Server=tcp:.database.windows.net,1433;Initial Catalog=todo_v4;Persist Security Info=False;User ID=webapp;Password=Super_Str0ng*P4ZZword!;MultipleActiveResultSets=False;Encrypt=True;TrustServerCertificate=False;Connection Timeout=30;'
+azureSQL='Server=tcp:.database.windows.net,1433;Initial Catalog=todo_v5;Persist Security Info=False;User ID=webapp;Password=Super_Str0ng*P4ZZword!;MultipleActiveResultSets=False;Encrypt=True;TrustServerCertificate=False;Connection Timeout=30;'
 
 gitSource="https://github.com/Azure-Samples/azure-sql-db-fullstack-serverless-kickstart"
 gitToken=""
@@ -39,7 +39,7 @@ az deployment group create \
     location=$location \
     repositoryToken=$gitToken \
     repositoryUrl=$gitSource \
-    branch="v4.0" \
+    branch="v5.0" \
     appLocation="./client" \
     apiLocation="./api" \
     azureSQL="$azureSQL"
