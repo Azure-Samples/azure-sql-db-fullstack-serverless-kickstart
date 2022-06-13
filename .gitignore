@@ -270,3 +270,4 @@ __blobstorage__/
 # Other
 .env
 global.json
+log.txt
