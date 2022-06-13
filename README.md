@@ -59,6 +59,10 @@ This repo has three branches that shows the development at different stages
 
 In this branch the backend REST API service is modified so that the to-do list can be saved an manged using an Azure SQL database. Communication with the database is done using JSON too, as Azure SQL support [JSON natively](https://docs.microsoft.com/en-us/sql/relational-databases/json/json-data-sql-server?view=sql-server-ver15). 
 
+### V1.0 Notes
+
+In this branch the solution will have a full working front-end, sending REST request to the fully working backend REST API. The to-do list is saved in-memory using a List object. No authentication or authorization is supported.
+
 ## Folder Structure
 
 - `/api`: the NodeJs Azure Function code used to provide the backend API, called by the Vue.Js client. 
