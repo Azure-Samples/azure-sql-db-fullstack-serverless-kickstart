@@ -55,7 +55,8 @@ This repo has three branches that shows the development at different stages
 - 2.0: Database support added
 - 3.0: Authentication and Authorization 
 - 4.0: Resilient connections using Polly
-- 5.0: [This Branch] Deployment samples (imperative or declarative)
+- 5.0: Deployment samples (imperative or declarative)
+- 6:0: [This Branch] Using Vue3 client for the frontend
 
 ### V5.0 Notes
 
