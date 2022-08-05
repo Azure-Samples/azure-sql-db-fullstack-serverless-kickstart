@@ -75,7 +75,7 @@ npm i -g azure-functions-core-tools@4 --unsafe-perm true
 Also install the [Azure Static Web Apps CLI](https://github.com/azure/static-web-apps-cli):
 
 ```sh
-npm install -g @azure/static-web-apps-cli`
+npm install -g @azure/static-web-apps-cli
 ```
 
 ## Test solution locally
