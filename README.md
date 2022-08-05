@@ -170,7 +170,7 @@ To run Azure Functions locally, you might also need a local Azure Storage emulat
 Make sure Azurite is running and then start the Azure Static Web App emulator:
 
 ```sh
-swa start ./client --api--location ./api    
+swa start ./client --api-location ./api    
 ```
 
 and you'll be good to go.
