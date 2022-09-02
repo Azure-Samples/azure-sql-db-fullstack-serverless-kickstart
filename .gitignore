@@ -272,3 +272,5 @@ __blobstorage__/
 .env.*
 global.json
 log.txt
+client/dist
+client/node_modules
