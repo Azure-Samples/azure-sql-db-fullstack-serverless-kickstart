@@ -269,7 +269,7 @@ __blobstorage__/
 
 # Other
 .env
-.env.*
+.env.v*
 global.json
 log.txt
 client/dist/
