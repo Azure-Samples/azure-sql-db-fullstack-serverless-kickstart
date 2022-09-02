@@ -28,7 +28,7 @@ Guidance on onboarding samples to docs.microsoft.com/samples: https://review.doc
 Taxonomies for products and languages: https://review.docs.microsoft.com/new-hope/information-architecture/metadata/taxonomies?branch=master
 -->
 
-# Serverless Full-Stack Kickstart 
+# Serverless Full-Stack Kickstart
 
 ![License](https://img.shields.io/badge/license-MIT-green.svg)
 
@@ -39,7 +39,7 @@ Learn how to implement a fully working, end-to-end, full-stack solution using Az
 This demo has been used in the Azure Serverless Conference 2021. Make sure to check out the recording and get the slides here:
 
 - Slides: https://www.slideshare.net/davidemauri/azure-serverless-fullstack-kickstart
-- Recording: https://www.youtube.com/watch?v=TIh52zbi8Dk 
+- Recording: https://www.youtube.com/watch?v=TIh52zbi8Dk
 
 ![Recording Screenshot](./docs/screenshot.jpg)
 
@@ -53,13 +53,13 @@ This repo has different branches that shows the development at different stages.
 
 - 1.0: First version, no database support
 - 2.0: Database support added
-- 3.0: Authentication and Authorization 
+- 3.0: Authentication and Authorization
 - 4.0: Resilient connections using Polly
 - 5.0: [This Branch] Deployment samples (imperative or declarative)
 
 ### V5.0 Notes
 
-WIP
+Continuing from V4.0, this branch focuses on including the database in the deployment pipeline. There are two may strategies that can be used: imperative and declarative. 
 
 ### V4.0 Notes
 
@@ -67,11 +67,11 @@ Built on top of the V3.0, in this branch retry-logic is added so that if a conne
 
 ### V3.0 Notes
 
-In this branch the backend REST API service and the database are modified so that a user can be authenticated and they will see and manage only the to-do items they have created. Anonymous access is also allowed, and all to-do items created while not authenticated will be visible and manageable by anyone. Authentication is done via the Azure Static Web Apps reverse proxy, that [takes care of all the complexities](https://docs.microsoft.com/en-us/azure/static-web-apps/authentication-authorization) of OAuth2 for you. The Vue web client has been also updated to provide login and logoff capabilities. 
+In this branch the backend REST API service and the database are modified so that a user can be authenticated and they will see and manage only the to-do items they have created. Anonymous access is also allowed, and all to-do items created while not authenticated will be visible and manageable by anyone. Authentication is done via the Azure Static Web Apps reverse proxy, that [takes care of all the complexities](https://docs.microsoft.com/azure/static-web-apps/authentication-authorization) of OAuth2 for you. The Vue web client has been also updated to provide login and logoff capabilities.
 
 ### V2.0 Notes
 
-In this branch the backend REST API service is modified so that the to-do list can be saved an manged using an Azure SQL database. Communication with the database is done using JSON too, as Azure SQL support [JSON natively](https://docs.microsoft.com/en-us/sql/relational-databases/json/json-data-sql-server?view=sql-server-ver15). 
+In this branch the backend REST API service is modified so that the to-do list can be saved an manged using an Azure SQL database. Communication with the database is done using JSON too, as Azure SQL support [JSON natively](https://docs.microsoft.com/sql/relational-databases/json/json-data-sql-server).
 
 ### V1.0 Notes
 
@@ -101,7 +101,7 @@ npm i -g @azure/static-web-apps-cli
 
 ## Create the Azure SQL database
 
-If you don't have a Azure SQL server already, you can create one (no additional costs for a server) running the following [AZ CLI](https://docs.microsoft.com/en-us/cli/azure/) command (via [WSL](https://docs.microsoft.com/en-us/windows/wsl/), or Linux or [Azure Cloud Shell](https://azure.microsoft.com/en-us/features/cloud-shell/)):
+If you don't have a Azure SQL server already, you can create one (no additional costs for a server) running the following [AZ CLI](https://docs.microsoft.com/cli/azure/) command (via [WSL](https://docs.microsoft.com/windows/wsl/), or Linux or [Azure Cloud Shell](https://azure.microsoft.com/features/cloud-shell/)):
 
 
 ```sh
