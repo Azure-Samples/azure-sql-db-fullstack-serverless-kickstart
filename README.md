@@ -150,7 +150,7 @@ dotnet run
 you will see something like: 
 
 ```
-Deploying database: todo_v3
+Deploying database: todo_v4
 Testing connection...
 Starting deployment...
 Beginning database upgrade
@@ -179,7 +179,7 @@ To run Azure Functions locally, for example to debug them, you also need a local
 Make sure Azurite is running and then start the Azure Static Web App emulator:
 
 ```sh
-swa start ./client --api--location ./api    
+swa start ./client --api-location ./api    
 ```
 
 and you'll be good to go.
