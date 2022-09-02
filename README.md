@@ -49,7 +49,7 @@ To run this sample in your subscription, make sure to fork the repository into y
 
 ## Repo branches
 
-This repo has three branches that shows the development at different stages
+This repo has different branches that shows the development at different stages. This is the branch 3.0.
 
 - 1.0: First version, no database support
 - 2.0: Database support added
@@ -86,7 +86,7 @@ npm i -g azure-functions-core-tools@4 --unsafe-perm true
 Also install the [Azure Static Web Apps CLI](https://github.com/azure/static-web-apps-cli):
 
 ```sh
-npm install -g @azure/static-web-apps-cli
+npm i -g @azure/static-web-apps-cli
 ```
 
 ## Create the Azure SQL database
@@ -124,7 +124,7 @@ SERVER=<my-server>.database.windows.net;DATABASE=todo_v3;UID=<my_user_id>;PWD=<m
 
 replace the placeholder with the correct value for your database, username and password and you're good to go. Make sure the database user specified in the connection string has enough permission to create objects (for example, make sure is a server administrator or in the db_owner database role).
 
-Please note that using the server administrator login is not recommended as way to powerful. If you are testing this on a sample server that you'll not use for production purposes, that shouldn't be an issue. But if want to be on the safe side and implement a correct security process you can create a user that will be used only for running the deployment script:
+Please note that using the server administrator login is not recommended as is way to powerful. If you are testing this on a sample server that you'll not use for production purposes, that shouldn't be an issue. But if want to be on the safe side and implement a correct security process you can create a user that will be used only for running the deployment script:
 
 ```
 create user [deployment_user] with password = '<a_strong_password>';
@@ -168,7 +168,7 @@ Database has been deployed successfully!
 
 Before starting the solution locally, you have to configure the Azure Function that is used to provide the backed API. In the `./api` folder create a `local.settings.json` file starting from the provided template. All you have to do is update the connection string with the value correct for you solution. If have created the Azure SQL database as described above you'll have a database named `todo_v3`. Just make sure you add the correct server name in the `local.settings.json`. The database name, user login and password are already set in the template file to match those used in this repository and in the `./database/sql/01-create-objects.sql` file.
 
-To run Azure Functions locally, you might also need a local Azure Storage emulator. You can use [Azurite](https://docs.microsoft.com/en-us/azure/storage/common/storage-use-azurite?tabs=visual-studio) that also has a VS Code extension.
+To run Azure Functions locally, for example to debug them, you also need a local Azure Storage emulator. You can use [Azurite](https://docs.microsoft.com/en-us/azure/storage/common/storage-use-azurite?tabs=visual-studio) that also has a VS Code extension.
 
 Make sure Azurite is running and then start the Azure Static Web App emulator:
 
