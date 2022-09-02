@@ -75,12 +75,12 @@ npm i -g azure-functions-core-tools@4 --unsafe-perm true
 Also install the [Azure Static Web Apps CLI](https://github.com/azure/static-web-apps-cli):
 
 ```sh
-npm install -g @azure/static-web-apps-cli`
+npm i -g @azure/static-web-apps-cli
 ```
 
 ## Test solution locally
 
-Before starting the solution locally, you have to configure the Azure Function that is used to provide the backed API. In the `./api` folder create a `local.settings.json` file starting from the provided template. To run Azure Functions locally, you also need a local Azure Storage emulator. You can use [Azurite](https://docs.microsoft.com/en-us/azure/storage/common/storage-use-azurite?tabs=visual-studio) that also has a VS Code extension.
+Before starting the solution locally, you have to configure the Azure Function that is used to provide the backed API. In the `./api` folder create a `local.settings.json` file starting from the provided template. Also, if you want to run Azure Functions locally, for example to debug them, you also need a local Azure Storage emulator. You can use [Azurite](https://docs.microsoft.com/en-us/azure/storage/common/storage-use-azurite?tabs=visual-studio) that also has a VS Code extension.
 
 Make sure Azurite is running and then start the Azure Static Web App emulator:
 
