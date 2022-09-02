@@ -149,7 +149,7 @@ dotnet run
 you will see something like: 
 
 ```
-Deploying database: todo_v3
+Deploying database: todo_v4
 Testing connection...
 Starting deployment...
 Beginning database upgrade
