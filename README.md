@@ -49,7 +49,7 @@ To run this sample in your subscription, make sure to fork the repository into y
 
 ## Repo branches
 
-This repo has three branches that shows the development at different stages
+This repo has different branches that shows the development at different stages. This is the branch 5.0.
 
 - 1.0: First version, no database support
 - 2.0: Database support added
@@ -96,7 +96,7 @@ npm i -g azure-functions-core-tools@4 --unsafe-perm true
 Also install the [Azure Static Web Apps CLI](https://github.com/azure/static-web-apps-cli):
 
 ```sh
-npm install -g @azure/static-web-apps-cli
+npm i -g @azure/static-web-apps-cli
 ```
 
 ## Create the Azure SQL database
@@ -126,6 +126,8 @@ you can get your public IP from here, for example: https://ifconfig.me/
 
 ## Deploy the database
 
+### Imperative Deployment
+
 Database is deployed using [DbUp](http://dbup.github.io/). Switch to the `./database/deploy` folder and create new `.env` file containing the connection string to the created Azure SQL database. You can use the provide `.env.template` as a guide. The connection string look like:
 
 ```
@@ -134,7 +136,7 @@ SERVER=<my-server>.database.windows.net;DATABASE=todo_v5;UID=<my_user_id>;PWD=<m
 
 replace the placeholder with the correct value for your database, username and password and you're good to go. Make sure the database user specified in the connection string has enough permission to create objects (for example, make sure is a server administrator or in the db_owner database role).
 
-Please note that using the server administrator login is not recommended as way to powerful. If you are testing this on a sample server that you'll not use for production purposes, that shouldn't be an issue. But if want to be on the safe side and implement a correct security process you can create a user that will be used only for running the deployment script:
+Please note that using the server administrator login is not recommended as is way to powerful. If you are testing this on a sample server that you'll not use for production purposes, that shouldn't be an issue. But if want to be on the safe side and implement a correct security process you can create a user that will be used only for running the deployment script:
 
 ```
 create user [deployment_user] with password = '<a_strong_password>';
@@ -154,7 +156,7 @@ dotnet run
 you will see something like: 
 
 ```
-Deploying database: todo_v3
+Deploying database: todo_v5
 Testing connection...
 Starting deployment...
 Beginning database upgrade
@@ -174,16 +176,20 @@ Success!
 
 Database has been deployed successfully!
 
+### Declarative Deployment
+
+WIP
+
 ## Test solution locally
 
 Before starting the solution locally, you have to configure the Azure Function that is used to provide the backed API. In the `./api` folder create a `local.settings.json` file starting from the provided template. All you have to do is update the connection string with the value correct for you solution. If have created the Azure SQL database as described above you'll have a database named `todo_v5`. Just make sure you add the correct server name in the `local.settings.json`. The database name, user login and password are already set in the template file to match those used in this repository and in the `./database/sql/01-create-objects.sql` file.
 
-To run Azure Functions locally, you might also need a local Azure Storage emulator. You can use [Azurite](https://docs.microsoft.com/en-us/azure/storage/common/storage-use-azurite?tabs=visual-studio) that also has a VS Code extension.
+To run Azure Functions locally, for example to debug them, you also need a local Azure Storage emulator. You can use [Azurite](https://docs.microsoft.com/en-us/azure/storage/common/storage-use-azurite?tabs=visual-studio) that also has a VS Code extension.
 
 Make sure Azurite is running and then start the Azure Static Web App emulator:
 
 ```sh
-swa start ./client --api--location ./api    
+swa start ./client --api-location ./api    
 ```
 
 and you'll be good to go.
@@ -216,6 +222,8 @@ Run the `./azure-deploy.sh` script and the Azure Static Web app will be deployed
 
 Once the deployment script has finished, you can go to the created Azure Static Web App in the Azure Portal and you can see it as been connected to the specified GitHub repository. Azure Static Web App has also created a new workflow in the GitHub repository that uses GitHub Actions to define the CI/CD pipeline that will build and publish the website every time a commit is pushed to the repo.
 
+### Imperative Deployment
+
 The generated GitHub Action doesn't know that we are using a database to store to-do list data, so we need to add the database deployment to the GitHub Action manually. No big deal, is a very small change. First of all you have to create a new [GitHub secrets](https://docs.github.com/en/actions/security-guides/encrypted-secrets):
 
 - AZURE_SQL_CONNECTION_STRING
@@ -239,6 +247,10 @@ Then you have to add the following code, just before the `Build And Deploy` step
 The file `./.github/workflow/azure-static-web-apps.yml.sample` shows an example of how the yaml should look like. Commit and push the changes and the deployment will start again, this time deploying also the database objects.
 
 If you also want to deploy the Azure SQL server and database within the same pipeline, you can do so by using the provided ARM template `./database/azure-sql-db.arm.json` and the [Deploy ARM GitHub Action](https://github.com/Azure/arm-deploy).
+
+### Declarative Deployment
+
+WIP
 
 ## Run the solution on Azure
 
