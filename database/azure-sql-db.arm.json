@@ -26,7 +26,7 @@
 			}
 		},
 		"databaseAdministratorLoginPassword": {
-			"type": "secureString",
+			"type": "securestring",
 			"defaultValue": "AzUR3SqL_PAzzw0rd!",
 			"metadata": {
 				"description": "Azure SQL Database admin password"
