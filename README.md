@@ -49,7 +49,7 @@ To run this sample in your subscription, make sure to fork the repository into y
 
 ## Repo branches
 
-This repo has three branches that shows the development at different stages
+This repo has different branches that shows the development at different stages. This is the branch 4.0.
 
 - 1.0: First version, no database support
 - 2.0: Database support added
@@ -59,7 +59,19 @@ This repo has three branches that shows the development at different stages
 
 ### V5.0 Notes
 
+Built on top of the V3.0, in this branch retry-logic is added so that if a connection to Azure SQL cannot be made or if a SQL query cannot be executed due to some transient error, the operation is automatically retried for up to 5 times, without returning any error to the end user.
+
+### V3.0 Notes
+
 In this branch the backend REST API service and the database are modified so that a user can be authenticated and they will see and manage only the to-do items they have created. Anonymous access is also allowed, and all to-do items created while not authenticated will be visible and manageable by anyone. Authentication is done via the Azure Static Web Apps reverse proxy, that [takes care of all the complexities](https://docs.microsoft.com/en-us/azure/static-web-apps/authentication-authorization) of OAuth2 for you. The Vue web client has been also updated to provide login and logoff capabilities. 
+
+### V2.0 Notes
+
+In this branch the backend REST API service is modified so that the to-do list can be saved an manged using an Azure SQL database. Communication with the database is done using JSON too, as Azure SQL support [JSON natively](https://docs.microsoft.com/en-us/sql/relational-databases/json/json-data-sql-server?view=sql-server-ver15). 
+
+### V1.0 Notes
+
+In this branch the solution will have a full working front-end, sending REST request to the fully working backend REST API. The to-do list is saved in-memory using a List object. No authentication or authorization is supported.
 
 ## Folder Structure
 
@@ -80,7 +92,7 @@ npm i -g azure-functions-core-tools@4 --unsafe-perm true
 Also install the [Azure Static Web Apps CLI](https://github.com/azure/static-web-apps-cli):
 
 ```sh
-npm install -g @azure/static-web-apps-cli
+npm i -g @azure/static-web-apps-cli
 ```
 
 ## Create the Azure SQL database
@@ -118,7 +130,7 @@ SERVER=<my-server>.database.windows.net;DATABASE=todo_v5;UID=<my_user_id>;PWD=<m
 
 replace the placeholder with the correct value for your database, username and password and you're good to go. Make sure the database user specified in the connection string has enough permission to create objects (for example, make sure is a server administrator or in the db_owner database role).
 
-Please note that using the server administrator login is not recommended as way to powerful. If you are testing this on a sample server that you'll not use for production purposes, that shouldn't be an issue. But if want to be on the safe side and implement a correct security process you can create a user that will be used only for running the deployment script:
+Please note that using the server administrator login is not recommended as is way to powerful. If you are testing this on a sample server that you'll not use for production purposes, that shouldn't be an issue. But if want to be on the safe side and implement a correct security process you can create a user that will be used only for running the deployment script:
 
 ```
 create user [deployment_user] with password = '<a_strong_password>';
@@ -162,7 +174,7 @@ Database has been deployed successfully!
 
 Before starting the solution locally, you have to configure the Azure Function that is used to provide the backed API. In the `./api` folder create a `local.settings.json` file starting from the provided template. All you have to do is update the connection string with the value correct for you solution. If have created the Azure SQL database as described above you'll have a database named `todo_v5`. Just make sure you add the correct server name in the `local.settings.json`. The database name, user login and password are already set in the template file to match those used in this repository and in the `./database/sql/01-create-objects.sql` file.
 
-To run Azure Functions locally, you might also need a local Azure Storage emulator. You can use [Azurite](https://docs.microsoft.com/en-us/azure/storage/common/storage-use-azurite?tabs=visual-studio) that also has a VS Code extension.
+To run Azure Functions locally, for example to debug them, you also need a local Azure Storage emulator. You can use [Azurite](https://docs.microsoft.com/en-us/azure/storage/common/storage-use-azurite?tabs=visual-studio) that also has a VS Code extension.
 
 Make sure Azurite is running and then start the Azure Static Web App emulator:
 
