@@ -49,7 +49,7 @@ To run this sample in your subscription, make sure to fork the repository into y
 
 ## Repo branches
 
-This repo has different branches that shows the development at different stages. This is the branch 4.0.
+This repo has different branches that shows the development at different stages. This is the branch 5.0.
 
 - 1.0: First version, no database support
 - 2.0: Database support added
@@ -58,6 +58,10 @@ This repo has different branches that shows the development at different stages.
 - 5.0: [This Branch] Deployment samples (imperative or declarative)
 
 ### V5.0 Notes
+
+WIP
+
+### V4.0 Notes
 
 Built on top of the V3.0, in this branch retry-logic is added so that if a connection to Azure SQL cannot be made or if a SQL query cannot be executed due to some transient error, the operation is automatically retried for up to 5 times, without returning any error to the end user.
 
@@ -122,6 +126,8 @@ you can get your public IP from here, for example: https://ifconfig.me/
 
 ## Deploy the database
 
+### Imperative Deployment
+
 Database is deployed using [DbUp](http://dbup.github.io/). Switch to the `./database/deploy` folder and create new `.env` file containing the connection string to the created Azure SQL database. You can use the provide `.env.template` as a guide. The connection string look like:
 
 ```
@@ -150,7 +156,7 @@ dotnet run
 you will see something like: 
 
 ```
-Deploying database: todo_v4
+Deploying database: todo_v5
 Testing connection...
 Starting deployment...
 Beginning database upgrade
@@ -169,6 +175,10 @@ Success!
 ```
 
 Database has been deployed successfully!
+
+### Declarative Deployment
+
+WIP
 
 ## Test solution locally
 
@@ -212,6 +222,8 @@ Run the `./azure-deploy.sh` script and the Azure Static Web app will be deployed
 
 Once the deployment script has finished, you can go to the created Azure Static Web App in the Azure Portal and you can see it as been connected to the specified GitHub repository. Azure Static Web App has also created a new workflow in the GitHub repository that uses GitHub Actions to define the CI/CD pipeline that will build and publish the website every time a commit is pushed to the repo.
 
+### Imperative Deployment
+
 The generated GitHub Action doesn't know that we are using a database to store to-do list data, so we need to add the database deployment to the GitHub Action manually. No big deal, is a very small change. First of all you have to create a new [GitHub secrets](https://docs.github.com/en/actions/security-guides/encrypted-secrets):
 
 - AZURE_SQL_CONNECTION_STRING
@@ -235,6 +247,10 @@ Then you have to add the following code, just before the `Build And Deploy` step
 The file `./.github/workflow/azure-static-web-apps.yml.sample` shows an example of how the yaml should look like. Commit and push the changes and the deployment will start again, this time deploying also the database objects.
 
 If you also want to deploy the Azure SQL server and database within the same pipeline, you can do so by using the provided ARM template `./database/azure-sql-db.arm.json` and the [Deploy ARM GitHub Action](https://github.com/Azure/arm-deploy).
+
+### Declarative Deployment
+
+WIP
 
 ## Run the solution on Azure
 
