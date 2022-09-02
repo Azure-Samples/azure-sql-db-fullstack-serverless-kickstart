@@ -34,7 +34,7 @@ Taxonomies for products and languages: https://review.docs.microsoft.com/new-hop
 
 Learn how to implement a fully working, end-to-end, full-stack solution using Azure Static Web Apps, Azure Functions and Azure SQL Serverless. In this session we’ll see and build together the simple (but not too simple!) To-Do list reference app, using Vue.js, CI/CD and more! 
 
-## Azure Serverless Conference 2021
+## Azure Serverless Conference Recording
 
 This demo has been used in the Azure Serverless Conference 2021. Make sure to check out the recording and get the slides here:
 
@@ -85,7 +85,7 @@ Before starting the solution locally, you have to configure the Azure Function t
 Make sure Azurite is running and then start the Azure Static Web App emulator:
 
 ```sh
-swa start ./client --api--location ./api    
+swa start ./client --api-location ./api    
 ```
 
 and you'll be good to go.
