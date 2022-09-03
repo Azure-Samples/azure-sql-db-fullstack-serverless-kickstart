@@ -28,13 +28,13 @@ Guidance on onboarding samples to docs.microsoft.com/samples: https://review.doc
 Taxonomies for products and languages: https://review.docs.microsoft.com/new-hope/information-architecture/metadata/taxonomies?branch=master
 -->
 
-# Serverless Full-Stack Kickstart 
+# Serverless Full-Stack Kickstart
 
 ![License](https://img.shields.io/badge/license-MIT-green.svg)
 
 Learn how to implement a fully working, end-to-end, full-stack solution using Azure Static Web Apps, Azure Functions and Azure SQL Serverless. In this session we’ll see and build together the simple (but not too simple!) To-Do list reference app, using Vue.js, CI/CD and more! 
 
-## Azure Serverless Conference 2021
+## Azure Serverless Conference Recording
 
 This demo has been used in the Azure Serverless Conference 2021. Make sure to check out the recording and get the slides here:
 
@@ -62,11 +62,11 @@ Built on top of the V3.0, in this branch retry-logic is added so that if a conne
 
 ### V3.0 Notes
 
-In this branch the backend REST API service and the database are modified so that a user can be authenticated and they will see and manage only the to-do items they have created. Anonymous access is also allowed, and all to-do items created while not authenticated will be visible and manageable by anyone. Authentication is done via the Azure Static Web Apps reverse proxy, that [takes care of all the complexities](https://docs.microsoft.com/en-us/azure/static-web-apps/authentication-authorization) of OAuth2 for you. The Vue web client has been also updated to provide login and logoff capabilities. 
+In this branch the backend REST API service and the database are modified so that a user can be authenticated and they will see and manage only the to-do items they have created. Anonymous access is also allowed, and all to-do items created while not authenticated will be visible and manageable by anyone. Authentication is done via the Azure Static Web Apps reverse proxy, that [takes care of all the complexities](https://docs.microsoft.com/azure/static-web-apps/authentication-authorization) of OAuth2 for you. The Vue web client has been also updated to provide login and logoff capabilities.
 
 ### V2.0 Notes
 
-In this branch the backend REST API service is modified so that the to-do list can be saved an manged using an Azure SQL database. Communication with the database is done using JSON too, as Azure SQL support [JSON natively](https://docs.microsoft.com/en-us/sql/relational-databases/json/json-data-sql-server?view=sql-server-ver15). 
+In this branch the backend REST API service is modified so that the to-do list can be saved an manged using an Azure SQL database. Communication with the database is done using JSON too, as Azure SQL support [JSON natively](https://docs.microsoft.com/sql/relational-databases/json/json-data-sql-server?view=sql-server-ver15).
 
 ### V1.0 Notes
 
@@ -74,7 +74,7 @@ In this branch the solution will have a full working front-end, sending REST req
 
 ## Folder Structure
 
-- `/api`: the NodeJs Azure Function code used to provide the backend API, called by the Vue.Js client. 
+- `/api`: the NodeJs Azure Function code used to provide the backend API, called by the Vue.Js client.
 - `/client`: the Vue.Js client. Original source code has been taken from official Vue.js sample and adapted to call a REST client instead of using local storage to save and retrieve todos
 - `/database`: the database scripts and the database deployment tool
 
@@ -96,7 +96,7 @@ npm i -g @azure/static-web-apps-cli
 
 ## Create the Azure SQL database
 
-If you don't have a Azure SQL server already, you can create one (no additional costs for a server) running the following [AZ CLI](https://docs.microsoft.com/en-us/cli/azure/) command (via [WSL](https://docs.microsoft.com/en-us/windows/wsl/), or Linux or [Azure Cloud Shell](https://azure.microsoft.com/en-us/features/cloud-shell/)):
+If you don't have a Azure SQL server already, you can create one (no additional costs for a server) running the following [AZ CLI](https://docs.microsoft.com/cli/azure/) command (via [WSL](https://docs.microsoft.com/windows/wsl/), or Linux or [Azure Cloud Shell](https://azure.microsoft.com/features/cloud-shell/)):
 
 
 ```sh
@@ -123,7 +123,7 @@ you can get your public IP from here, for example: https://ifconfig.me/
 
 Database is deployed using [DbUp](http://dbup.github.io/). Switch to the `./database/deploy` folder and create new `.env` file containing the connection string to the created Azure SQL database. You can use the provide `.env.template` as a guide. The connection string look like:
 
-```
+```text
 SERVER=<my-server>.database.windows.net;DATABASE=todo_v4;UID=<my_user_id>;PWD=<my_user_password>;
 ```
 
@@ -131,7 +131,7 @@ replace the placeholder with the correct value for your database, username and p
 
 Please note that using the server administrator login is not recommended as is way to powerful. If you are testing this on a sample server that you'll not use for production purposes, that shouldn't be an issue. But if want to be on the safe side and implement a correct security process you can create a user that will be used only for running the deployment script:
 
-```
+```sql
 create user [deployment_user] with password = '<a_strong_password>';
 go
 
@@ -141,14 +141,14 @@ go
 
 Once you have configured the connection string, you can deploy the database objects:
 
-```
+```sh
 cd ./database/deploy
 dotnet run
 ```
 
 you will see something like: 
 
-```
+```sh
 Deploying database: todo_v4
 Testing connection...
 Starting deployment...
@@ -173,7 +173,7 @@ Database has been deployed successfully!
 
 Before starting the solution locally, you have to configure the Azure Function that is used to provide the backed API. In the `./api` folder create a `local.settings.json` file starting from the provided template. All you have to do is update the connection string with the value correct for you solution. If have created the Azure SQL database as described above you'll have a database named `todo_v4`. Just make sure you add the correct server name in the `local.settings.json`. The database name, user login and password are already set in the template file to match those used in this repository and in the `./database/sql/01-create-objects.sql` file.
 
-To run Azure Functions locally, for example to debug them, you also need a local Azure Storage emulator. You can use [Azurite](https://docs.microsoft.com/en-us/azure/storage/common/storage-use-azurite?tabs=visual-studio) that also has a VS Code extension.
+To run Azure Functions locally, for example to debug them, you also need a local Azure Storage emulator. You can use [Azurite](https://docs.microsoft.com/azure/storage/common/storage-use-azurite?tabs=visual-studio) that also has a VS Code extension.
 
 Make sure Azurite is running and then start the Azure Static Web App emulator:
 
@@ -185,11 +185,11 @@ and you'll be good to go.
 
 once this text will appear:
 
-```
+```sh
 Azure Static Web Apps emulator started at http://localhost:4280. Press CTRL+C to exit.
 ```
 
-everything will be up and running. Go the the indicated URL and you'll see the ToDo App. Go an play with it, it will work perfectly, having the Vue.js frontend calling the REST API provided by the Azure Function and storing the to-do list in a List object. 
+everything will be up and running. Go the the indicated URL and you'll see the ToDo App. Go an play with it, it will work perfectly, having the Vue.js frontend calling the REST API provided by the Azure Function and storing the to-do list in a List object.
 
 You can also try to login and be an authenticated user. Static Web Apps will provide a mock of the real authentication process (done using the GitHub authentication provider, in this sample), so you can have a full experience also when debugging locally.
 
@@ -197,7 +197,7 @@ You can also try to login and be an authenticated user. Static Web Apps will pro
 
 Now that you know everything works fine, you can deploy the solution to Azure. You can take advantage of the script `./azure-deploy.sh` that will deploy the Azure Static Web app for you.
 
-The first time the script will run will create an empty `.env` file in the sample root folder that you have to fill out. Aside from the usual Azure information like the resource group, the location and the app name, you also have to provide a [GitHub Token](https://docs.microsoft.com/en-us/azure/static-web-apps/publish-azure-resource-manager?tabs=azure-cli#create-a-github-personal-access-token).
+The first time the script will run will create an empty `.env` file in the sample root folder that you have to fill out. Aside from the usual Azure information like the resource group, the location and the app name, you also have to provide a [GitHub Token](https://docs.microsoft.com/azure/static-web-apps/publish-azure-resource-manager?tabs=azure-cli#create-a-github-personal-access-token).
 
 The GitHub Token is needed as Azure Static Web App will create a GitHub action in your repository in order to automate deployment of the solution to Azure. That is right: every time you'll push a code change to your code main code branch, the application will also be re-built and deployed in Azure.
 
@@ -205,7 +205,7 @@ Make sure you set the variable `gitSource` to the address of your forked reposit
 
 If you are using the `.env` file you created in `v1.0`, make sure to add the connection string to Azure SQL by creating and setting the `azureSQL` variable. You can use the same connection string you used in the `./api/local.setting.json` file to test the solution locally.
 
-Run the `./azure-deploy.sh` script and the Azure Static Web app will be deployed in specified resource group. You can run the script using [WSL](https://docs.microsoft.com/en-us/windows/wsl/), or Linux or [Azure Cloud Shell](https://azure.microsoft.com/en-us/features/cloud-shell/).
+Run the `./azure-deploy.sh` script and the Azure Static Web app will be deployed in specified resource group. You can run the script using [WSL](https://docs.microsoft.com/windows/wsl/), or Linux or [Azure Cloud Shell](https://azure.microsoft.com/features/cloud-shell/).
 
 ### Adding the database to the CI/CD pipeline
 
