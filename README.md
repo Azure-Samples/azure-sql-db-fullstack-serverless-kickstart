@@ -28,7 +28,7 @@ Guidance on onboarding samples to docs.microsoft.com/samples: https://review.doc
 Taxonomies for products and languages: https://review.docs.microsoft.com/new-hope/information-architecture/metadata/taxonomies?branch=master
 -->
 
-# Serverless Full-Stack Kickstart 
+# Serverless Full-Stack Kickstart
 
 ![License](https://img.shields.io/badge/license-MIT-green.svg)
 
@@ -49,7 +49,7 @@ To run this sample in your subscription, make sure to fork the repository into y
 
 ## Repo branches
 
-This repo has three branches that shows the development at different stages
+This repo has several branches that shows the development at different stages
 
 - 1.0: This branch
 
@@ -80,7 +80,7 @@ npm i -g @azure/static-web-apps-cli
 
 ## Test solution locally
 
-Before starting the solution locally, you have to configure the Azure Function that is used to provide the backed API. In the `./api` folder create a `local.settings.json` file starting from the provided template. Also, if you want to run Azure Functions locally, for example to debug them, you also need a local Azure Storage emulator. You can use [Azurite](https://docs.microsoft.com/en-us/azure/storage/common/storage-use-azurite?tabs=visual-studio) that also has a VS Code extension.
+Before starting the solution locally, you have to configure the Azure Function that is used to provide the backed API. In the `./api` folder create a `local.settings.json` file starting from the provided template. Also, if you want to run Azure Functions locally, for example to debug them, you also need a local Azure Storage emulator. You can use [Azurite](https://docs.microsoft.com/azure/storage/common/storage-use-azurite?tabs=visual-studio) that also has a VS Code extension.
 
 Make sure Azurite is running and then start the Azure Static Web App emulator:
 
@@ -92,7 +92,7 @@ and you'll be good to go.
 
 once this text will appear:
 
-```
+```sh
 Azure Static Web Apps emulator started at http://localhost:4280. Press CTRL+C to exit.
 ```
 
@@ -102,13 +102,13 @@ everything will be up and running. Go the the indicated URL and you'll see the T
 
 Now that you know everything works fine, you can deploy the solution to Azure. You can take advantage of the script `./azure-deploy.sh` that will deploy the Azure Static Web app for you.
 
-The first time the script will run will create an empty `.env` file in the sample root folder that you have to fill out. Aside from the usual Azure information like the resource group, the location and the app name, you also have to provide a [GitHub Token](https://docs.microsoft.com/en-us/azure/static-web-apps/publish-azure-resource-manager?tabs=azure-cli#create-a-github-personal-access-token).
+The first time the script will run will create an empty `.env` file in the sample root folder that you have to fill out. Aside from the usual Azure information like the resource group, the location and the app name, you also have to provide a [GitHub Token](https://docs.microsoft.com/azure/static-web-apps/publish-azure-resource-manager?tabs=azure-cli#create-a-github-personal-access-token).
 
 The GitHub Token is needed as Azure Static Web App will create a GitHub action in your repository in order to automate deployment of the solution to Azure. That is right: every time you'll push a code change to your code main code branch, the application will also be re-built and deployed in Azure.
 
 Make sure you set the variable `gitSource` to the address of your forked repository.
 
-Run the `./azure-deploy.sh` script and the Azure Static Web app will be deployed in specified resource group. You can run the script using [WSL](https://docs.microsoft.com/en-us/windows/wsl/), or Linux or [Azure Cloud Shell](https://azure.microsoft.com/en-us/features/cloud-shell/).
+Run the `./azure-deploy.sh` script and the Azure Static Web app will be deployed in specified resource group. You can run the script using [WSL](https://docs.microsoft.com/windows/wsl/), or Linux or [Azure Cloud Shell](https://azure.microsoft.com/features/cloud-shell/).
 
 ## Run the solution on Azure
 
