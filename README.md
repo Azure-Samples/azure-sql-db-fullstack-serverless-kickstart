@@ -28,7 +28,7 @@ Guidance on onboarding samples to docs.microsoft.com/samples: https://review.doc
 Taxonomies for products and languages: https://review.docs.microsoft.com/new-hope/information-architecture/metadata/taxonomies?branch=master
 -->
 
-# Serverless Full-Stack Kickstart 
+# Serverless Full-Stack Kickstart
 
 ![License](https://img.shields.io/badge/license-MIT-green.svg)
 
@@ -172,7 +172,7 @@ and you'll be good to go.
 
 once this text will appear:
 
-```
+```sh
 Azure Static Web Apps emulator started at http://localhost:4280. Press CTRL+C to exit.
 ```
 
@@ -182,7 +182,7 @@ everything will be up and running. Go the the indicated URL and you'll see the T
 
 Now that you know everything works fine, you can deploy the solution to Azure. You can take advantage of the script `./azure-deploy.sh` that will deploy the Azure Static Web app for you.
 
-The first time the script will run will create an empty `.env` file in the sample root folder that you have to fill out. Aside from the usual Azure information like the resource group, the location and the app name, you also have to provide a [GitHub Token](https://docs.microsoft.com/en-us/azure/static-web-apps/publish-azure-resource-manager?tabs=azure-cli#create-a-github-personal-access-token).
+The first time the script will run will create an empty `.env` file in the sample root folder that you have to fill out. Aside from the usual Azure information like the resource group, the location and the app name, you also have to provide a [GitHub Token](https://docs.microsoft.com/azure/static-web-apps/publish-azure-resource-manager?tabs=azure-cli#create-a-github-personal-access-token).
 
 The GitHub Token is needed as Azure Static Web App will create a GitHub action in your repository in order to automate deployment of the solution to Azure. That is right: every time you'll push a code change to your code main code branch, the application will also be re-built and deployed in Azure.
 
