@@ -304,7 +304,7 @@ Then you have to add the following code, just before the `Build And Deploy` step
   with:
     dotnet-version: '6.0.x' 
 - name: Deploy Database
-  working-directory: ./database/deploy
+  working-directory: ./database/imperative-deploy
   env: 
     ConnectionString: ${{ secrets.AZURE_SQL_CONNECTION_STRING }}    
   run: dotnet build && dotnet run      
