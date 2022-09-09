@@ -128,13 +128,7 @@ you can get your public IP from here, for example: https://ifconfig.me/
 
 There are two may strategies that can be used: imperative and declarative. The imperative approach is the one that has been used until now, where the script to create the database objects are applied in the defined order. The declarative approach is instead where you have the database state (a snapshot of the schema) you want to have and a tool will take care of making all the correct changes to bring the target database to that state.
 
-In both cases the first step is to have at hand the connection string needed to connect to create Azure SQL database. Switch to the `./database/` folder:
-
-```sh
-cd ./database
-```
-
- and create new `.env` file, that will contain the aforementioned connection string. Use the provided `.env.template` as a guide. The connection string look like:
+In both cases the first step is to have at hand the connection string needed to connect to create Azure SQL database. Depending on your deployment strategy preference, switch to the `./database/declarative-deploy` or `./database/imperative-deploy` folder and create new `.env` file, that will contain the aforementioned connection string. Use the provided `.env.template` as a guide. The connection string look like:
 
 ```text
 Server=<my-server>.database.windows.net;Initial Catalog=todo_v5;User Id=<my_user_id>;Password=<my_user_password>;
@@ -157,7 +151,7 @@ go
 Database is deployed using [DbUp](http://dbup.github.io/). The scripts that will be deployed are in the `./imperative-deploy/sql` folder. Once you have configured the connection string as explained before, you can deploy the database objects:
 
 ```sh
-cd ./imperative-deploy/dbup
+cd ./imperative-deploy
 dotnet run
 ```
 
@@ -222,7 +216,6 @@ Build succeeded.
 
 Time Elapsed 00:00:03.17
 Publishing .dacpac...
-Server=zv6qimpc6cbrg.database.windows.net;Initial Catalog=todo_v5;User Id=db_admin;Password=EcivWb_xkzxiQ;
 Publishing to database 'todo_v5' on server 'zv6qimpc6cbrg.database.windows.net'.
 Initializing deployment (Start)
 Initializing deployment (Complete)
