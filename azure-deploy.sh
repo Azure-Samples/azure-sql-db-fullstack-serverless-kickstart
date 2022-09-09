@@ -31,7 +31,7 @@ az group create \
 
 echo "Deploying Static Web App...";
 az deployment group create \
-  --name "swa-deploy-4.0" \
+  --name "swa-deploy-5.0" \
   --resource-group $resourceGroup \
   --template-file azure-deploy.arm.json \
   --parameters \
