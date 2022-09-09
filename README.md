@@ -59,7 +59,7 @@ This repo has different branches that shows the development at different stages.
 
 ### V5.0 Notes
 
-Continuing from V4.0, this branch focuses on including the database in the deployment pipeline. There are two may strategies that can be used: imperative and declarative. The imperative approach is the one that has been used until now, where the script to create the database objects are applied in the defined order. The declarative approach is instead where you have the database state (a snapshot of the schema) you want to have and a tool will take care of making all the correct changes to bring the target database to that state. That tool is [SqlPackage](https://docs.microsoft.com/sql/tools/sqlpackage/sqlpackage-publish)
+Continuing from V4.0, this branch focuses on including the database in the deployment pipeline and gives you the option to choose between an imperative or a declarative database deployment style. 
 
 ### V4.0 Notes
 
@@ -125,17 +125,23 @@ you can get your public IP from here, for example: https://ifconfig.me/
 
 ## Deploy the database
 
-### Imperative Deployment
+There are two may strategies that can be used: imperative and declarative. The imperative approach is the one that has been used until now, where the script to create the database objects are applied in the defined order. The declarative approach is instead where you have the database state (a snapshot of the schema) you want to have and a tool will take care of making all the correct changes to bring the target database to that state.
 
-Database is deployed using [DbUp](http://dbup.github.io/). Switch to the `./database/deploy` folder and create new `.env` file containing the connection string to the created Azure SQL database. You can use the provide `.env.template` as a guide. The connection string look like:
+In both cases the first step is to have at hand the connection string needed to connect to create Azure SQL database. Switch to the `./database/` folder:
 
-```text
-SERVER=<my-server>.database.windows.net;DATABASE=todo_v5;UID=<my_user_id>;PWD=<my_user_password>;
+```sh
+cd ./database
 ```
 
-replace the placeholder with the correct value for your database, username and password and you're good to go. Make sure the database user specified in the connection string has enough permission to create objects (for example, make sure is a server administrator or in the db_owner database role).
+ and create new `.env` file, that will contain the aforementioned connection string. Use the provided `.env.template` as a guide. The connection string look like:
 
-Please note that using the server administrator login is not recommended as is way to powerful. If you are testing this on a sample server that you'll not use for production purposes, that shouldn't be an issue. But if want to be on the safe side and implement a correct security process you can create a user that will be used only for running the deployment script:
+```text
+Server=<my-server>.database.windows.net;Initial Catalog=todo_v5;User Id=<my_user_id>;Password=<my_user_password>;
+```
+
+replace the placeholders with the correct value for your database, username and password and you're good to go. Make sure the database user specified in the connection string has enough permission to create objects (for example, make sure is a server administrator or in the db_owner database role).
+
+Please note that using the server administrator login is not recommended as is way too powerful. If you are testing this on a sample server that you'll not use for production purposes, that shouldn't be an issue. But if want to be on the safe side and implement a correct security process you can create a user that will be used only for running the deployment script:
 
 ```sql
 create user [deployment_user] with password = '<a_strong_password>';
@@ -145,10 +151,12 @@ alter role [db_owner] add member [deployment_user]
 go
 ```
 
-Once you have configured the connection string, you can deploy the database objects:
+### Imperative Deployment
+
+Database is deployed using [DbUp](http://dbup.github.io/). The scripts that will be deployed are in the `./imperative-deploy/sql` folder. Once you have configured the connection string as explained before, you can deploy the database objects:
 
 ```sh
-cd ./database/deploy
+cd ./imperative-deploy/dbup
 dotnet run
 ```
 
@@ -177,7 +185,66 @@ Database has been deployed successfully!
 
 ### Declarative Deployment
 
-Make sure you have `sqlpackage` tool installed and added to your PATH. Follow the instructions here: [Download and install SqlPackage](https://docs.microsoft.com/en-us/sql/tools/sqlpackage/sqlpackage-download)
+Database scripts are stored in the `./database/declarative-deploy/todo_v5` folder, which contains also the related [MSBuild SQL Project](https://techcommunity.microsoft.com/t5/azure-sql-blog/microsoft-build-sql-the-next-frontier-of-sql-projects/ba-p/3290628). 
+
+A SQL Project can be build using the standard `dotnet build` action and it will generate a `.dacpac` file that contains the description of all the database objects that are needed to make your solution work: the database state you need to have deployed. If you want to work on the database project is recommended that you use Visual Studio Code or Azure Data Studio with the "SQL Database Projects" extension.
+
+Deployment will be done via the `sqlpackage` tool. Make sure it is installed and added to your PATH as per the instructions here: [Download and install SqlPackage](https://docs.microsoft.com/en-us/sql/tools/sqlpackage/sqlpackage-download).
+
+Once `sqlpackage` is installed you can deploy the database using the `./database/declarative-deployment/azure-deploy-sql-db.sh` script to automate the whole (build + deploy) process:
+
+```sh
+cd ./declarative-deployment
+./azure-deploy-sql-db.sh
+```
+
+you'll see something like:
+
+```sh
+Loading from ../.env
+Building .dacpac...
+MSBuild version 17.3.0+92e077650 for .NET
+  Determining projects to restore...
+  All projects are up-to-date for restore.
+  Creating a model to represent the project...
+  Loading project references...
+  Loading project files...
+  Building the project model and resolving object interdependencies...
+  Validating the project model...
+  Writing model to /mnt/w/_git/_owned/azure-sql-db-fullstack-serverless-kickstart/database/declarative-deploy/todo_v5/obj/Debug/Model.xml...
+  todo_v5 -> /mnt/w/_git/_owned/azure-sql-db-fullstack-serverless-kickstart/database/declarative-deploy/todo_v5/bin/Debug/todo_v5.dll
+  todo_v5 -> /mnt/w/_git/_owned/azure-sql-db-fullstack-serverless-kickstart/database/declarative-deploy/todo_v5/bin/Debug/todo_v5.dacpac
+
+Build succeeded.
+    0 Warning(s)
+    0 Error(s)
+
+Time Elapsed 00:00:03.17
+Publishing .dacpac...
+Server=zv6qimpc6cbrg.database.windows.net;Initial Catalog=todo_v5;User Id=db_admin;Password=EcivWb_xkzxiQ;
+Publishing to database 'todo_v5' on server 'zv6qimpc6cbrg.database.windows.net'.
+Initializing deployment (Start)
+Initializing deployment (Complete)
+Analyzing deployment plan (Start)
+Analyzing deployment plan (Complete)
+Updating database (Start)
+Creating SqlSchema [web]...
+Creating SqlTable [dbo].[todos]...
+Creating SqlDefaultConstraint unnamed constraint on [dbo].[todos]...
+Creating SqlSequence [dbo].[global_sequence]...
+Creating SqlDefaultConstraint unnamed constraint on [dbo].[todos]...
+Creating SqlProcedure [web].[delete_todo]...
+Creating SqlProcedure [web].[get_todo]...
+Creating SqlProcedure [web].[patch_todo]...
+Creating SqlProcedure [web].[post_todo]...
+Update complete.
+Updating database (Complete)
+Successfully published database.
+Time elapsed 0:00:44.97
+Done.
+```
+
+Database has been deployed successfully!
 
 ## Test solution locally
 
@@ -221,13 +288,13 @@ Run the `./azure-deploy.sh` script and the Azure Static Web app will be deployed
 
 Once the deployment script has finished, you can go to the created Azure Static Web App in the Azure Portal and you can see it as been connected to the specified GitHub repository. Azure Static Web App has also created a new workflow in the GitHub repository that uses GitHub Actions to define the CI/CD pipeline that will build and publish the website every time a commit is pushed to the repo.
 
-### Imperative Deployment
-
 The generated GitHub Action doesn't know that we are using a database to store to-do list data, so we need to add the database deployment to the GitHub Action manually. No big deal, is a very small change. First of all you have to create a new [GitHub secrets](https://docs.github.com/en/actions/security-guides/encrypted-secrets):
 
 - AZURE_SQL_CONNECTION_STRING
 
-The `AZURE_SQL_CONNECTION_STRING` is the connection string that can be used to deploy the database. You can use the same connection string used for deploying the database objects. You can find it in the `./database/deploy/.env` file.
+The `AZURE_SQL_CONNECTION_STRING` is the connection string that can be used to deploy the database. You can use the same connection string used for deploying the database objects. You can find it in the `./database/.env` file.
+
+### Imperative Deployment on Azure
 
 Then you have to add the following code, just before the `Build And Deploy` step, to the file you'll find in `./.github/workflow`:
 
@@ -243,13 +310,27 @@ Then you have to add the following code, just before the `Build And Deploy` step
   run: dotnet build && dotnet run      
 ```
 
-The file `./.github/workflow/azure-static-web-apps.yml.sample` shows an example of how the yaml should look like. Commit and push the changes and the deployment will start again, this time deploying also the database objects.
+The file `./.github/workflow/azure-static-web-apps-imperative-db-deploy.yml.sample` shows an example of how the yaml should look like. Commit and push the changes and the deployment will start again, this time deploying also the database objects.
 
 If you also want to deploy the Azure SQL server and database within the same pipeline, you can do so by using the provided ARM template `./database/azure-sql-db.arm.json` and the [Deploy ARM GitHub Action](https://github.com/Azure/arm-deploy).
 
-### Declarative Deployment
 
-WIP
+### Declarative Deployment on Azure
+
+Then you have to add the following code, just before the `Build And Deploy` step, to the file you'll find in `./.github/workflow`:
+
+```yml
+- name: Deploy Database
+  uses: azure/sql-action@v1.3
+  with:        
+    connection-string: ${{ secrets.AZURE_SQL_CONNECTION_STRING }}
+    project-file: './database/declarative-deploy/todo_v5/todo_v5.sqlproj'
+    build-arguments: '-c Release'
+```
+
+The file `./.github/workflow/azure-static-web-apps-declarative-db-deploy.yml.sample` shows an example of how the yaml should look like. Commit and push the changes and the deployment will start again, this time deploying also the database objects.
+
+If you also want to deploy the Azure SQL server and database within the same pipeline, you can do so by using the provided ARM template `./database/azure-sql-db.arm.json` and the [Deploy ARM GitHub Action](https://github.com/Azure/arm-deploy).
 
 ## Run the solution on Azure
 

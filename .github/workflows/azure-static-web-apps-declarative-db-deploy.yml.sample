@@ -18,13 +18,13 @@ jobs:
       - uses: actions/checkout@v2
         with:
           submodules: true
-      - name: Build And Deploy Database
+      - name: Deploy Database
         uses: azure/sql-action@v1.3
         with:        
           connection-string: ${{ secrets.AZURE_SQL_CONNECTION_STRING }}
           project-file: './database/declarative-deploy/todo_v5/todo_v5.sqlproj'
           build-arguments: '-c Release'
-      - name: Build And Deploy Static Web App
+      - name: Build And Deploy
         id: builddeploy
         uses: Azure/static-web-apps-deploy@v1
         with:
