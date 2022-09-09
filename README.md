@@ -55,11 +55,11 @@ This repo has different branches that shows the development at different stages.
 - 2.0: Database support added
 - 3.0: Authentication and Authorization
 - 4.0: Resilient connections using Polly
-- 5.0: [This Branch] Deployment samples (imperative or declarative)
+- 5.0: [This Branch] Database imperative or declarative CI/CD
 
 ### V5.0 Notes
 
-Continuing from V4.0, this branch focuses on including the database in the deployment pipeline and gives you the option to choose between an imperative or a declarative database deployment style. 
+Continuing from V4.0, this branch focuses on including the database in the deployment pipeline and gives you the option to choose between an imperative or a declarative database deployment style.
 
 ### V4.0 Notes
 
