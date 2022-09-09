@@ -5,7 +5,7 @@ set -euo pipefail
 FILE="../.env"
 if [[ -f $FILE ]]; then
 	echo "Loading from $FILE" 
-    export $(egrep "^[^#;]" $FILE | xargs -n1)
+    eval $(egrep "^[^#;]" $FILE | xargs -0 -n1 | sed 's/^/export /')
 else
 	echo "Enviroment file not detected."
 	echo "Please make sure there is a .env file in the sample root folder and run the script again."

@@ -5,9 +5,7 @@ set -euo pipefail
 FILE="../.env"
 if [[ -f $FILE ]]; then
 	echo "Loading from $FILE" 
-    set -o allexport
-	source $FILE
-	set +o allexport
+    eval $(egrep "^[^#;]" $FILE | xargs -0 -n1 | sed 's/^/export /')
 else
 	echo "Enviroment file not detected."
 	echo "Please make sure there is a .env file in the 'database' folder and run the script again."
@@ -18,7 +16,6 @@ echo "Building .dacpac..."
 dotnet build /p:NetCoreBuild=true todo_v5
 
 echo "Publishing .dacpac..."
-echo "$ConnectionString"
 sqlpackage /Action:Publish /SourceFile:./todo_v5/bin/Debug/todo_v5.dacpac /TargetConnectionString:"$ConnectionString"
 
 echo "Done."
