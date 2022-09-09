@@ -59,7 +59,7 @@ This repo has different branches that shows the development at different stages.
 
 ### V5.0 Notes
 
-Continuing from V4.0, this branch focuses on including the database in the deployment pipeline. There are two may strategies that can be used: imperative and declarative. 
+Continuing from V4.0, this branch focuses on including the database in the deployment pipeline. There are two may strategies that can be used: imperative and declarative. The imperative approach is the one that has been used until now, where the script to create the database objects are applied in the defined order. The declarative approach is instead where you have the database state (a snapshot of the schema) you want to have and a tool will take care of making all the correct changes to bring the target database to that state. That tool is [SqlPackage](https://docs.microsoft.com/sql/tools/sqlpackage/sqlpackage-publish)
 
 ### V4.0 Notes
 
@@ -81,7 +81,7 @@ In this branch the solution will have a full working front-end, sending REST req
 
 - `/api`: the NodeJs Azure Function code used to provide the backend API, called by the Vue.Js client.
 - `/client`: the Vue.Js client. Original source code has been taken from official Vue.js sample and adapted to call a REST client instead of using local storage to save and retrieve todos
-- `/database`: the database scripts and the database deployment tool
+- `/database`: the database scripts and the database deployment tools
 
 ## Install the dependencies
 
@@ -103,7 +103,6 @@ npm i -g @azure/static-web-apps-cli
 
 If you don't have a Azure SQL server already, you can create one (no additional costs for a server) running the following [AZ CLI](https://docs.microsoft.com/cli/azure/) command (via [WSL](https://docs.microsoft.com/windows/wsl/), or Linux or [Azure Cloud Shell](https://azure.microsoft.com/features/cloud-shell/)):
 
-
 ```sh
 az sql server create -n <server-name> -l <location> --admin-user <admin-user> --admin-password <admin-password> -g <resource-group>
  ```
@@ -118,7 +117,7 @@ Another option is to run the `azure-create-sql-db.sh` script in the `./databases
 
 Make sure you have the firewall configured to allow your machine to access Azure SQL:
 
-```
+```sh
 az sql server firewall-rule create --resource-group <resource-group> --server <server-name> --name AllowMyClientIP_1 --start-ip-address <your_public_ip> --end-ip-address <your_public_ip>
 ```
 
@@ -153,7 +152,7 @@ cd ./database/deploy
 dotnet run
 ```
 
-you will see something like: 
+you will see something like:
 
 ```sh
 Deploying database: todo_v5
@@ -178,7 +177,7 @@ Database has been deployed successfully!
 
 ### Declarative Deployment
 
-WIP
+Make sure you have `sqlpackage` tool installed and added to your PATH. Follow the instructions here: [Download and install SqlPackage](https://docs.microsoft.com/en-us/sql/tools/sqlpackage/sqlpackage-download)
 
 ## Test solution locally
 
