@@ -11,9 +11,9 @@
     <Delete Files="$(BaseIntermediateOutputPath)\project.assets.json" />
   </Target>
   <ItemGroup>
-    <PreDeploy Include="pre-deployment.sql.sql" />
+    <PreDeploy Include="pre-deployment.sql" />
   </ItemGroup>
   <ItemGroup>
-    <PostDeploy Include="post-deployment.sql.sql" />
+    <PostDeploy Include="post-deployment.sql" />
   </ItemGroup>
 </Project>

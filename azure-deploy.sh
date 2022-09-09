@@ -5,7 +5,7 @@ set -euo pipefail
 FILE=".env"
 if [[ -f $FILE ]]; then
 	echo "Loading from $FILE" 
-    eval $(egrep "^[^#;]" .env | xargs -d'\n' -n1 | sed 's/^/export /')
+    eval $(egrep "^[^#;]" $FILE | xargs -0 -n1 | sed 's/^/export /')
 else
 	cat << EOF > .env
 resourceGroup=""
@@ -31,7 +31,7 @@ az group create \
 
 echo "Deploying Static Web App...";
 az deployment group create \
-  --name "swa-deploy-4.0" \
+  --name "swa-deploy-5.0" \
   --resource-group $resourceGroup \
   --template-file azure-deploy.arm.json \
   --parameters \

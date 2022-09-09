@@ -1,7 +1,10 @@
 -- This file contains SQL statements that will be executed after the build script.
 
-insert into dbo.[todos] (todo) 
-values ('slides'), ('demos')
+insert into dbo.[todos] 
+    (todo, owner_id) 
+values 
+    ('slides', 'anonymous'), 
+    ('demos', 'anonymous')
 go
 
 if (user_id('webapp') is null) begin

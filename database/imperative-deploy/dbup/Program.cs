@@ -9,8 +9,9 @@ namespace Todo.Database.Deploy
     {
         static int Main(string[] args)
         {
-            // This will load the content of .env file and create related environment variables
-            DotNetEnv.Env.Load();
+            // This will load the content of .env file from the parent "database"
+            // and create related environment variables
+            DotNetEnv.Env.Load("../../");            
 
             // Connection string for deploying the database (high-privileged account as it needs to be able to CREATE/ALTER/DROP)
             var connectionString = Environment.GetEnvironmentVariable("ConnectionString");
