@@ -5,7 +5,7 @@ set -euo pipefail
 FILE=".env"
 if [[ -f $FILE ]]; then
 	echo "Loading from $FILE" 
-    eval $(egrep "^[^#;]" .env | xargs -d'\n' -n1 | sed 's/^/export /')
+    eval $(egrep "^[^#;]" $FILE | xargs -0 -n1 | sed 's/^/export /')
 else
 	cat << EOF > .env
 resourceGroup=""
