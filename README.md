@@ -53,10 +53,10 @@ This repo has different branches that shows the development at different stages.
 
 - 1.0: First version, no database support
 - 2.0: Database support added
-- 3.0: Authentication and Authorization
+- 3.0: Authentication and Authorization via EasyAuth
 - 4.0: Resilient connections using Polly
 - 5.0: [This Branch] Database imperative or declarative CI/CD
-- 6.0: (Work in progress) Make propoer use of Vue.Js 3 for the frontend
+- 6.0: (Work in progress) Make proper use of Vue.Js 3 for the frontend
 - 7.0: (Not started yet) Stop using passwords to allow the backend connect to the database
 - 8.0: (Not started yet) Use FusionCache to add caching support
 - 9.0: (Not started yet) Implement [Massive Read-Scale Out pattern](https://github.com/Azure-Samples/azure-sql-db-named-replica-oltp-scaleout)
