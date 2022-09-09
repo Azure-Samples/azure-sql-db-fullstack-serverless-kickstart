@@ -273,3 +273,4 @@ __blobstorage__/
 global.json
 log.txt
 client/dist/
+client/node_modules/

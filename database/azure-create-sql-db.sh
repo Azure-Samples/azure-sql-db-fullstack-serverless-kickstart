@@ -5,7 +5,7 @@ set -euo pipefail
 FILE="../.env"
 if [[ -f $FILE ]]; then
 	echo "Loading from $FILE" 
-    export $(egrep "^[^#;]" $FILE | xargs -n1)
+    eval $(egrep "^[^#;]" $FILE | xargs -0 -n1 | sed 's/^/export /')
 else
 	echo "Enviroment file not detected."
 	echo "Please make sure there is a .env file in the sample root folder and run the script again."
@@ -22,9 +22,9 @@ pwd1=`cat /dev/urandom | tr -dc A-Za-z0-9 | head -c 6 ; echo`
 pwd2=`cat /dev/urandom | tr -dc A-Za-z0-9 | head -c 6 ; echo`
 adminPwd="${pwd1}_${pwd2}"
 adminName="db_admin"
-azureSQLDB="todo_v4"
+azureSQLDB="todo_v5"
 azureSQLServer=$(az deployment group create \
-    --name "sql-db-deploy-4.0" \
+    --name "sql-db-deploy-5.0" \
     --resource-group $resourceGroup \
     --template-file azure-sql-db.arm.json \
     --parameters \
