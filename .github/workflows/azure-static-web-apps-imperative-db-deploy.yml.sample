@@ -23,7 +23,7 @@ jobs:
         with:
           dotnet-version: '6.0.x' 
       - name: Deploy Database
-        working-directory: ./database/imperative-deploy/dbup
+        working-directory: ./database/imperative-deploy
         env: 
           ConnectionString: ${{ secrets.AZURE_SQL_CONNECTION_STRING }}    
         run: dotnet build && dotnet run      
