@@ -1,0 +1,14 @@
+{
+  "$schema": "https://aka.ms/azure/static-web-apps-cli/schema",
+  "configurations": {
+    "azure-sql-db-fullstack-serverless-kickstart": {
+      "appLocation": "client",
+      "apiLocation": "api",
+      "outputLocation": "dist",
+      "appBuildCommand": "npm run build",
+      "apiBuildCommand": "dotnet publish -c Release",
+      "run": "npm run serve",
+      "appDevserverUrl": "http://localhost:8080"
+    }
+  }
+}

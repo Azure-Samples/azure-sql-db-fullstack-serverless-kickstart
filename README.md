@@ -58,6 +58,10 @@ This repo has different branches that shows the development at different stages.
 - 5.0: Database imperative or declarative CI/CD
 - 6:0: [This Branch] Using Vue3 client for the frontend
 
+### V6.0 Notes
+
+In V6.0 the focus is on the front-end, now move to be a proper [Vue](https://vuejs.org/) project. 
+
 ### V5.0 Notes
 
 Continuing from V4.0, this branch focuses on including the database in the deployment pipeline and gives you the option to choose between an imperative or a declarative database deployment style.
