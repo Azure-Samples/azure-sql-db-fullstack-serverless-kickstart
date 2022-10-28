@@ -32,7 +32,7 @@ Taxonomies for products and languages: https://review.docs.microsoft.com/new-hop
 
 ![License](https://img.shields.io/badge/license-MIT-green.svg)
 
-Learn how to implement a fully working, end-to-end, full-stack solution using Azure Static Web Apps, Azure Functions and Azure SQL Serverless. In this session we’ll see and build together the simple (but not too simple!) To-Do list reference app, using Vue.js, CI/CD and more! 
+Learn how to implement a fully working, end-to-end, full-stack solution using Azure Static Web Apps, Azure Functions and Azure SQL Serverless. In this session we’ll see and build together the simple (but not too simple!) To-Do list reference app, using Vue.js, CI/CD and more!
 
 ## Azure Serverless Conference Recording
 
@@ -60,7 +60,7 @@ This repo has different branches that shows the development at different stages.
 
 ### V6.0 Notes
 
-In V6.0 the focus is on the front-end, now move to be a proper [Vue](https://vuejs.org/) project. 
+In V6.0 the focus is on the front-end, now updated to be a proper [Vue](https://vuejs.org/) project.
 
 ### V5.0 Notes
 
