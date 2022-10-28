@@ -16,7 +16,6 @@ namespace Todo.Backend
             builder.Services.AddDbContext<TodoContext>(
                 options => options.UseSqlServer(connectionString)
             );
-        }
-        
+        }       
     }
 }

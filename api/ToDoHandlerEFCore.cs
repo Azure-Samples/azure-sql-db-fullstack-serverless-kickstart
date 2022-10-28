@@ -13,8 +13,8 @@ using System.Linq;
 using System.Data;
 using Microsoft.Data.SqlClient;
 using Microsoft.EntityFrameworkCore;
+using Microsoft.EntityFrameworkCore.Design;
 using System.ComponentModel.DataAnnotations.Schema;
-using Dapper;
 
 namespace Todo.Backend.EFCore
 {
@@ -36,6 +36,7 @@ namespace Todo.Backend.EFCore
         public TodoContext(DbContextOptions<TodoContext> options)
             : base(options)
         { }
+
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
             modelBuilder.HasSequence<int>("global_sequence");
@@ -44,13 +45,25 @@ namespace Todo.Backend.EFCore
                 .Property(o => o.Id)
                 .HasDefaultValueSql("NEXT VALUE FOR global_sequence");
         }
+
         protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
             => optionsBuilder
             .LogTo(Console.WriteLine, LogLevel.Information)
             .EnableSensitiveDataLogging()
             .EnableDetailedErrors();
-
+        
         public DbSet<Todo> Todos { get; set; }        
+    }
+
+    public class TodoContextFactory: IDesignTimeDbContextFactory<TodoContext>
+    {
+        public TodoContext CreateDbContext(string[] args)
+        {
+            var optionsBuilder = new DbContextOptionsBuilder<TodoContext>();
+            optionsBuilder.UseSqlServer(Environment.GetEnvironmentVariable("AzureSQL"));
+
+            return new TodoContext(optionsBuilder.Options);
+        }
     }
 
     public class ToDoHandler
