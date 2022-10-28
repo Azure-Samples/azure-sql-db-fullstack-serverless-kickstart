@@ -14,7 +14,7 @@ using System.Data;
 using Microsoft.Data.SqlClient;
 using Dapper;
 
-namespace api
+namespace Todo.Backend
 {
     public static class ToDoHandler
     {        
