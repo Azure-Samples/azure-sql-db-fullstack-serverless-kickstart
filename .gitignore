@@ -274,3 +274,4 @@ global.json
 log.txt
 /database/
 client/dist/
+cleanup.sh

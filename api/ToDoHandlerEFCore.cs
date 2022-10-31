@@ -77,7 +77,7 @@ namespace Todo.Backend.EFCore
        
         [FunctionName("GetEF")]
         public async Task<IActionResult> Get(
-            [HttpTrigger(AuthorizationLevel.Anonymous, "get", Route = "todo-ef/{id:int?}")] HttpRequest req, 
+            [HttpTrigger(AuthorizationLevel.Anonymous, "get", Route = "ef/todo/{id:int?}")] HttpRequest req, 
             ILogger log, 
             int? id)
         {            
@@ -92,7 +92,7 @@ namespace Todo.Backend.EFCore
 
         [FunctionName("PostEF")]
         public async Task<IActionResult> Post(
-            [HttpTrigger(AuthorizationLevel.Anonymous, "post", Route = "todo-ef")] HttpRequest req, 
+            [HttpTrigger(AuthorizationLevel.Anonymous, "post", Route = "ef/todo")] HttpRequest req, 
             ILogger log)
         {
             string body = await new StreamReader(req.Body).ReadToEndAsync();            
@@ -101,12 +101,13 @@ namespace Todo.Backend.EFCore
             await this._todoContext.AddAsync(todo);
             await this._todoContext.SaveChangesAsync();                    
             
-            return new OkObjectResult(todo);
+            var result = new List<Todo>() { todo };
+            return new OkObjectResult(result);
         }
 
         [FunctionName("PatchEF")]
         public async Task<IActionResult> Patch(
-            [HttpTrigger(AuthorizationLevel.Anonymous, "patch", Route = "todo-ef/{id}")] HttpRequest req, 
+            [HttpTrigger(AuthorizationLevel.Anonymous, "patch", Route = "ef/todo/{id}")] HttpRequest req, 
             ILogger log,
             int id)
         {
@@ -128,7 +129,7 @@ namespace Todo.Backend.EFCore
 
         [FunctionName("DeleteEF")]
         public async Task<IActionResult> Delete(
-            [HttpTrigger(AuthorizationLevel.Anonymous, "delete", Route = "todo-ef/{id}")] HttpRequest req, 
+            [HttpTrigger(AuthorizationLevel.Anonymous, "delete", Route = "ef/todo/{id}")] HttpRequest req, 
             ILogger log,
             int id)
         {
