@@ -7,7 +7,6 @@ echo "Preparing sample for v2.0..."
 echo "Cleaning ./api ..."
 rm -rf ./api/bin
 rm -rf ./api/obj
-rm -rf ./api/Migrations
 
 # cleanup CLIENT
 echo "Cleaning ./client ..."
