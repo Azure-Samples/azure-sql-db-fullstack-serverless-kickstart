@@ -43,7 +43,7 @@ namespace Todo.Backend.EFCore
 
             modelBuilder.Entity<Todo>()
                 .Property(o => o.Id)
-                .HasDefaultValueSql("NEXT VALUE FOR global_sequence");
+                .HasDefaultValueSql("NEXT VALUE FOR global_sequence");                        
         }
 
         protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
