@@ -18,7 +18,7 @@ using System.Text;
 using Polly;
 using System.ComponentModel;
 
-namespace api
+namespace Todo.Backend
 {
     public static class ToDoHandler
     {

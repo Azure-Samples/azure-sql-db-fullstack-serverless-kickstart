@@ -76,7 +76,8 @@ In this branch the backend REST API service and the database are modified so tha
 
 ### V2.0 Notes
 
-In this branch the backend REST API service is modified so that the to-do list can be saved an manged using an Azure SQL database. Communication with the database is done using JSON too, as Azure SQL support [JSON natively](https://docs.microsoft.com/sql/relational-databases/json/json-data-sql-server).
+In this branch the backend REST API service is modified so that the to-do list can be saved an managed using an Azure SQL database. Communication with the database is done using JSON too, as Azure SQL support [JSON natively](https://docs.microsoft.com/en-us/sql/relational-databases/json/json-data-sql-server?view=sql-server-ver15). As an alternative, the same API using code [EF Core](https://learn.microsoft.com/en-us/ef/core/) is also provided.
+A initial option to (imperatively) deploy the database is also used, either using manually applied database script, or via the EF Core migrations.
 
 ### V1.0 Notes
 
