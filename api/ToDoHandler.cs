@@ -16,7 +16,7 @@ using Dapper;
 using System.Security.Claims;
 using System.Text;
 
-namespace api
+namespace Todo.Backend
 {
     public static class ToDoHandler
     {
