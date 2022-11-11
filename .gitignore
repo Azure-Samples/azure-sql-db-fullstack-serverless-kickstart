@@ -272,5 +272,4 @@ __blobstorage__/
 .env.v*
 global.json
 log.txt
-/database/
 client/dist/
