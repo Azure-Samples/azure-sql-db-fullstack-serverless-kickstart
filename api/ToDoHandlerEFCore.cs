@@ -117,9 +117,8 @@ namespace Todo.Backend.EFCore
             var targetTodo = await this._todoContext.Todos.FindAsync(id);
             if (targetTodo == null)
                 return new NotFoundResult();
-
-            //targetTodo.Id = newTodo.Id;
-            targetTodo.Title = newTodo.Title;
+            
+            targetTodo.Title = newTodo.Title ?? targetTodo.Title;
             targetTodo.Completed = newTodo.Completed;
 
             await this._todoContext.SaveChangesAsync();
