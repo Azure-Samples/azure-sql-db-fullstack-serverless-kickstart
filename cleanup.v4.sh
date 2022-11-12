@@ -1,7 +1,7 @@
 #!/bin/bash
 set -euo pipefail
 
-echo "Preparing sample for v3.0..."
+echo "Preparing sample for v4.0..."
 
 # cleanup API binaries
 rm -rf ./api/bin
