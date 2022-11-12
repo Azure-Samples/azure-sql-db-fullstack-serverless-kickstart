@@ -22,9 +22,9 @@ pwd1=`cat /dev/urandom | tr -dc A-Za-z0-9 | head -c 6 ; echo`
 pwd2=`cat /dev/urandom | tr -dc A-Za-z0-9 | head -c 6 ; echo`
 adminPwd="${pwd1}_${pwd2}"
 adminName="db_admin"
-azureSQLDB="todo_v5"
+azureSQLDB="todo_v6"
 azureSQLServer=$(az deployment group create \
-    --name "sql-db-deploy-5.0" \
+    --name "sql-db-deploy-6.0" \
     --resource-group $resourceGroup \
     --template-file azure-sql-db.arm.json \
     --parameters \

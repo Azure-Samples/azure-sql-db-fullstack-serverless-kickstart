@@ -32,7 +32,7 @@ Taxonomies for products and languages: https://review.docs.microsoft.com/new-hop
 
 ![License](https://img.shields.io/badge/license-MIT-green.svg)
 
-Learn how to implement a fully working, end-to-end, full-stack solution using Azure Static Web Apps, Azure Functions and Azure SQL Serverless. In this session we’ll see and build together the simple (but not too simple!) To-Do list reference app, using Vue.js, CI/CD and more! 
+Learn how to implement a fully working, end-to-end, full-stack solution using Azure Static Web Apps, Azure Functions and Azure SQL Serverless. In this session we’ll see and build together the simple (but not too simple!) To-Do list reference app, using Vue.js, CI/CD and more!
 
 ## Azure Serverless Conference Recording
 
@@ -55,12 +55,8 @@ This repo has different branches that shows the development at different stages.
 - 2.0: Database support added
 - 3.0: Authentication and Authorization via EasyAuth
 - 4.0: Resilient connections using Polly
-- 5.0: [This Branch] Database imperative or declarative CI/CD
-- 6.0: (Work in progress) Make proper use of Vue.Js 3 for the frontend
-- 7.0: (Not started yet) Stop using passwords to allow the backend connect to the database
-- 8.0: (Not started yet) Use FusionCache to add caching support
-- 9.0: (Not started yet) Implement [Massive Read-Scale Out pattern](https://github.com/Azure-Samples/azure-sql-db-named-replica-oltp-scaleout)
-
+- 5.0: Database imperative or declarative CI/CD
+- 6.0: [This Branch] Make proper use of Vue.Js 3 for the frontend
 
 ### V5.0 Notes
 
@@ -76,11 +72,23 @@ In this branch the backend REST API service and the database are modified so tha
 
 ### V2.0 Notes
 
-In this branch the backend REST API service is modified so that the to-do list can be saved an manged using an Azure SQL database. Communication with the database is done using JSON too, as Azure SQL support [JSON natively](https://docs.microsoft.com/sql/relational-databases/json/json-data-sql-server).
+In this branch the backend REST API service is modified so that the to-do list can be saved an managed using an Azure SQL database. Communication with the database is done using JSON too, as Azure SQL support [JSON natively](https://docs.microsoft.com/en-us/sql/relational-databases/json/json-data-sql-server?view=sql-server-ver15). As an alternative, the same API using code [EF Core](https://learn.microsoft.com/en-us/ef/core/) is also provided.
+A initial option to (imperatively) deploy the database is also used, either using manually applied database script, or via the EF Core migrations.
 
 ### V1.0 Notes
 
 In this branch the solution will have a full working front-end, sending REST request to the fully working backend REST API. The to-do list is saved in-memory using a List object. No authentication or authorization is supported.
+
+## Future Roadmap
+
+- Add API unit testing using [Mocha](https://mochajs.org/)
+- Add API smoke tests using [Locust](https://locust.io/)
+
+Future additional branches:
+
+- 7.0: Stop using passwords to allow the backend connect to the database
+- 8.0: Use FusionCache to add caching support
+- 9.0: Implement [Massive Read-Scale Out pattern](https://github.com/Azure-Samples/azure-sql-db-named-replica-oltp-scaleout)
 
 ## Folder Structure
 

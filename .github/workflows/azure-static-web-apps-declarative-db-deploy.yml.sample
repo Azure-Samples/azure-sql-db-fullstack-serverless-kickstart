@@ -3,11 +3,11 @@ name: Azure Static Web Apps CI/CD
 on:
   push:
     branches:
-      - main
+      - v6.0
   pull_request:
     types: [opened, synchronize, reopened, closed]
     branches:
-      - main
+      - v6.0
 
 jobs:
   build_and_deploy_job:
@@ -22,7 +22,7 @@ jobs:
         uses: azure/sql-action@v1.3
         with:        
           connection-string: ${{ secrets.AZURE_SQL_CONNECTION_STRING }}
-          project-file: './database/declarative-deploy/todo_v5/todo_v5.sqlproj'
+          project-file: './database/declarative-deploy/todo_v6/todo_v6.sqlproj'
           build-arguments: '-c Release'
       - name: Build And Deploy
         id: builddeploy

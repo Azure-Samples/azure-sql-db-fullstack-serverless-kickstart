@@ -13,9 +13,9 @@ else
 fi
 
 echo "Building .dacpac..."
-dotnet build /p:NetCoreBuild=true todo_v5
+dotnet build /p:NetCoreBuild=true todo_v6
 
 echo "Publishing .dacpac..."
-sqlpackage /Action:Publish /SourceFile:./todo_v5/bin/Debug/todo_v5.dacpac /TargetConnectionString:"$ConnectionString"
+sqlpackage /Action:Publish /SourceFile:./todo_v6/bin/Debug/todo_v6.dacpac /TargetConnectionString:"$ConnectionString"
 
 echo "Done."
