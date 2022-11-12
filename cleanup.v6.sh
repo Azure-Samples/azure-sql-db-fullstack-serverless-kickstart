@@ -13,7 +13,10 @@ rm -rf ./client/dist
 rm ./client/index.html
 
 # cleanup DATABASE
-rm -rf ./database/deploy
+rm -rf ./database/declarative-deploy
+rm -rf ./database/imperative-deploy
+rm -rf ./database/deploy/bin
+rm -rf ./database/deploy/obj
 
 # cleanup TEST
 rm -rf ./test
