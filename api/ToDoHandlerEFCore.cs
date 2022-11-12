@@ -168,9 +168,8 @@ namespace Todo.Backend.EFCore
             var targetTodo = this._todoContext.Todos.Where(t => t.Owner == cp.UserId).FirstOrDefault(t => t.Id == id);
             if (targetTodo == null)
                 return new NotFoundResult();
-
-            //targetTodo.Id = newTodo.Id;
-            targetTodo.Title = newTodo.Title;
+            
+            targetTodo.Title = newTodo.Title ?? targetTodo.Title;
             targetTodo.Completed = newTodo.Completed;
 
             await this._todoContext.SaveChangesAsync();
