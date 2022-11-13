@@ -12,17 +12,25 @@ else
 	exit 1
 fi
 
-echo "Deploying Azure SQL Database in Location '$location', Resournce Group: '$resourceGroup'...";
-azureSQLSRV="zv6qimpc6cbrg"
+echo "Creating Resource Group...";
+az group create \
+    -n $resourceGroup \
+    -l $location
+
+echo "Deploying Azure SQL Logical Server...";
+pwd1=`cat /dev/urandom | tr -dc A-Za-z0-9 | head -c 6 ; echo`
+pwd2=`cat /dev/urandom | tr -dc A-Za-z0-9 | head -c 6 ; echo`
+adminPwd="${pwd1}_${pwd2}"
+adminName="db_admin"
 azureSQLDB="todo_v2"
 azureSQLServer=$(az deployment group create \
-    --name "sql-db-deploy-2.0" \
+    --name "sql-srv-deploy-2.0" \
     --resource-group $resourceGroup \
-    --template-file azure-sql-db.arm.json \
+    --template-file azure-sql-srv.arm.json \
     --parameters \
-        databaseServer=$azureSQLSRV \
-        databaseName=$azureSQLDB \
         location=$location \
+        databaseAdministratorLogin=$adminName \
+		databaseAdministratorLoginPassword=$adminPwd \
     --query properties.outputs.databaseServer.value \
     -o tsv \
     )
@@ -30,5 +38,6 @@ azureSQLServer=$(az deployment group create \
 echo "Azure SQL Database available at";
 echo "- Location: $location"
 echo "- Server: $azureSQLServer"
-echo "- Database: $azureSQLDB"
+echo "- Admin Login: $adminName"
+echo "- Admin Password: $adminPwd"
 echo "Done."
