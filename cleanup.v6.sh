@@ -12,8 +12,7 @@ rm -rf ./client/node_modules
 rm -rf ./client/dist
 
 # cleanup DATABASE
-rm -rf ./database/deploy/bin
-rm -rf ./database/deploy/obj
+rm -rf ./database/deploy
 
 # cleanup TEST
 rm -rf ./test
