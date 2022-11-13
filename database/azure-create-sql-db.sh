@@ -12,11 +12,10 @@ else
 	exit 1
 fi
 
-echo "Deploying Azure SQL Database...";
 azureSQLDB="todo_v3"
 azureSQLSRV=`az sql server list -g $resourceGroup --query '[0].name' -o tsv`
 echo "(Server: '$azureSQLSRV', Location: '$location', Resource Group: '$resourceGroup')"
-azureSQLServer=$(az deployment group create \
+azureSQLServerName=$(az deployment group create \
     --name "sql-db-deploy-3.0" \
     --resource-group $resourceGroup \
     --template-file azure-sql-db.arm.json \
@@ -30,6 +29,6 @@ azureSQLServer=$(az deployment group create \
 
 echo "Azure SQL Database available at";
 echo "- Location: $location"
-echo "- Server: $azureSQLServer"
+echo "- Server: $azureSQLServerName"
 echo "- Database: $azureSQLDB"
 echo "Done."
