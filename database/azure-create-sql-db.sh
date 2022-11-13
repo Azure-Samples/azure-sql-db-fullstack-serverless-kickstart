@@ -12,11 +12,11 @@ else
 	exit 1
 fi
 
-azureSQLDB="todo_v4"
+azureSQLDB="todo_v5"
 azureSQLSRV=`az sql server list -g $resourceGroup --query '[0].name' -o tsv`
 echo "(Server: '$azureSQLSRV', Location: '$location', Resource Group: '$resourceGroup')"
 azureSQLServerName=$(az deployment group create \
-    --name "sql-db-deploy-4.0" \
+    --name "sql-db-deploy-5.0" \
     --resource-group $resourceGroup \
     --template-file azure-sql-db.arm.json \
     --parameters \

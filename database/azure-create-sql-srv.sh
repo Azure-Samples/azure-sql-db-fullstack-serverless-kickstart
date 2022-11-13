@@ -23,7 +23,7 @@ pwd2=`cat /dev/urandom | tr -dc A-Za-z0-9 | head -c 6 ; echo`
 adminPwd="${pwd1}_${pwd2}"
 adminName="db_admin"
 azureSQLServer=$(az deployment group create \
-    --name "sql-srv-deploy-4.0" \
+    --name "sql-srv-deploy-5.0" \
     --resource-group $resourceGroup \
     --template-file azure-sql-srv.arm.json \
     --parameters \
