@@ -36,18 +36,13 @@
 			</button>
 		</footer>
   </section> 
-  <footer class="info">
-    <label v-if="!userDetails" id="login">[<a href=".auth/login/github">login</a>]</label>
-		<label v-if="userDetails" id="logoff">[<a href=".auth/logout">logoff {{userDetails}}</a>]</label>    
-		<p>Double-click to edit a todo</p>
-		<p>Original <a href="https://github.com/vuejs/vuejs.org/tree/master/src/v2/examples/vue-20-todomvc">Vue.JS Sample</a> by <a href="http://evanyou.me">Evan You</a></p>		
-		<p>Part of <a href="http://todomvc.com">TodoMVC</a></p>        
-	</footer> 
+  <UserInfo/>
 </template>
 
 <script lang="js">
+import UserInfo from './UserInfo.vue'
+import API from '../api.js'
 
-var API = "/api/ef/todo";
 var HEADERS = { 'Accept': 'application/json', 'Content-Type': 'application/json' };		
 
 var filters = {
@@ -66,14 +61,17 @@ var filters = {
   }
 };
 
-export default {  
+export default {
+  components: {
+    UserInfo
+  },
+
   data() {
     return {
       todos: [],
       newTodo: "",
 			editedTodo: null,
-			visibility: "all",
-      userDetails: null
+			visibility: "all"
     };
   },
   
@@ -84,16 +82,7 @@ export default {
     } else {
       window.location.hash = "";
       this.visibility = "all";
-    }
-
-    fetch('/.auth/me')
-    .then(res => {
-      return res.json()
-    })
-    .then(payload => {
-      const { clientPrincipal } = payload;
-			this.userDetails = clientPrincipal?.userDetails;				
-    });						
+    }		
 
     fetch(API, { 
       headers: HEADERS, 
