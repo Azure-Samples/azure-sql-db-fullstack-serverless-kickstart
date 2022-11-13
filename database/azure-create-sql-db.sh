@@ -12,34 +12,23 @@ else
 	exit 1
 fi
 
-echo "Creating Resource Group...";
-az group create \
-    -n $resourceGroup \
-    -l $location
-
-echo "Deploying Azure SQL Database...";
-pwd1=`cat /dev/urandom | tr -dc A-Za-z0-9 | head -c 6 ; echo`
-pwd2=`cat /dev/urandom | tr -dc A-Za-z0-9 | head -c 6 ; echo`
-adminPwd="${pwd1}_${pwd2}"
-adminName="db_admin"
-azureSQLDB="todo_v5"
-azureSQLServer=$(az deployment group create \
-    --name "sql-db-deploy-5.0" \
+azureSQLDB="todo_v4"
+azureSQLSRV=`az sql server list -g $resourceGroup --query '[0].name' -o tsv`
+echo "(Server: '$azureSQLSRV', Location: '$location', Resource Group: '$resourceGroup')"
+azureSQLServerName=$(az deployment group create \
+    --name "sql-db-deploy-4.0" \
     --resource-group $resourceGroup \
     --template-file azure-sql-db.arm.json \
     --parameters \
+        databaseServer=$azureSQLSRV \
         databaseName=$azureSQLDB \
         location=$location \
-        databaseAdministratorLogin=$adminName \
-		databaseAdministratorLoginPassword=$adminPwd \
     --query properties.outputs.databaseServer.value \
     -o tsv \
     )
 
 echo "Azure SQL Database available at";
 echo "- Location: $location"
-echo "- Server: $azureSQLServer"
+echo "- Server: $azureSQLServerName"
 echo "- Database: $azureSQLDB"
-echo "- Admin Login: $adminName"
-echo "- Admin Password: $adminPwd"
 echo "Done."
