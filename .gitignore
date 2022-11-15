@@ -274,3 +274,4 @@ __blobstorage__/
 global.json
 log.txt
 client/dist
+.azure
