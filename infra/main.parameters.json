@@ -12,7 +12,7 @@
       "value": "${GITHUB_REPO_URL}"
     },
     "branch": {
-      "value": "${GITHUB_REPO_BRANCH}"
+      "value": "v1.0"
     },
     "repositoryToken": {
       "value": "${GITHUB_REPO_TOKEN}"
