@@ -12,7 +12,7 @@
       "value": "${GITHUB_REPO_URL}"
     },
     "branch": {
-      "value": "v1.0"
+      "value": "v1.0-with-azd"
     },
     "repositoryToken": {
       "value": "${GITHUB_REPO_TOKEN}"
