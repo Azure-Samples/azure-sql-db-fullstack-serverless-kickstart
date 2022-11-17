@@ -57,7 +57,7 @@ This repo has several branches that shows the development at different stages
 
 In this branch the solution will have a full working front-end, using Vue.js, sending REST request to the fully working backend REST API. The to-do list is saved in-memory using a List object. No authentication or authorization is supported.
 
-- [Folder Structure](./docs/run-and-deploy.md#folder-structure)
+- [Folder structure overview](./docs/run-and-deploy.md#folder-structure-overview
 - [Install the dependencies](./docs/run-and-deploy.md#install-the-dependencies)
 - [Test solution locally](./docs/run-and-deploy.md#test-solution-locally)
 - [Deploy the solution on Azure](./docs/run-and-deploy.md#deploy-the-solution-on-azure)

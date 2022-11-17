@@ -1,6 +1,6 @@
 # V1.0
 
-## Folder Structure
+## Folder structure overview
 
 - `/api`: the NodeJs Azure Function code used to provide the backend API, called by the Vue.Js client. 
 - `/client`: the Vue.Js client. Original source code has been taken from official Vue.js sample and adapted to call a REST client instead of using local storage to save and retrieve todos
@@ -41,15 +41,43 @@ everything will be up and running. Go the the indicated URL and you'll see the T
 
 ## Deploy the solution on Azure
 
-Now that you know everything works fine, you can deploy the solution to Azure. You can take advantage of the script `azure-deploy.sh` that will deploy the Azure Static Web app for you.
+Now that you know everything works fine, you can deploy the solution to Azure. To make the deployment as easy as possible, the `azd` tool is used. Install it following the instructions here: [Install the Azure Developer CLI](https://learn.microsoft.com/azure/developer/azure-developer-cli/install-azd)
 
-The first time the script will run will create an empty `.env` file in the sample root folder that you have to fill out. Aside from the usual Azure information like the resource group, the location and the app name, you also have to provide a [GitHub Token](https://docs.microsoft.com/azure/static-web-apps/publish-azure-resource-manager?tabs=azure-cli#create-a-github-personal-access-token).
+Befor moving forward get an GitHub Token with the scopes `repo` and the `workflow`. Read here how to do it: [Create a GitHub Personal Access Token](https://learn.microsoft.com/azure/static-web-apps/publish-azure-resource-manager?tabs=azure-cli#create-a-github-personal-access-tokenn).
 
 The GitHub Token is needed as Azure Static Web App will create a GitHub action in your repository in order to automate deployment of the solution to Azure. That is right: every time you'll push a code change to your code main code branch, the application will also be re-built and deployed in Azure.
 
-Make sure you set the variable `gitSource` to the address of your forked repository.
+Now initialize the deployment enviroment via
 
-Run the `./azure-deploy.sh` script and the Azure Static Web app will be deployed in specified resource group. You can run the script using [WSL](https://docs.microsoft.com/windows/wsl/), or Linux or [Azure Cloud Shell](https://azure.microsoft.com/features/cloud-shell/).
+```
+azd env get-values
+```
+
+Once the enviroment has been created, set the address of the GitHub repo to be used for deployment. Use the url of your forked repo:
+
+```
+azd env set GITHUB_REPO_URL https://github.com/<your_account>/azure-sql-db-fullstack-serverless-kickstart
+```
+
+and the set the GitHub access token you have created before:
+
+```
+azd env set GITHUB_REPO_TOKEN <github_token>
+```
+
+and then just run
+
+```
+azd up
+```
+
+from now own, you'll be able to just run the `up` command, as all other values are now set and will be reused (enviroment is stored in the `.azure` folder).
+
+To clean up all the created resources, just use the `down` command:
+
+```
+azd down
+```
 
 ## Run the solution on Azure
 
