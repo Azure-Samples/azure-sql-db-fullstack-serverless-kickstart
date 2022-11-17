@@ -17,6 +17,7 @@ param repositoryUrl string
 param branch string
 
 @minLength(1)
+@secure()
 @description('GitHub access token to allow SWA to connect to GitHub repository')
 param repositoryToken string
 
