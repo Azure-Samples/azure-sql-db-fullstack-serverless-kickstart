@@ -15,10 +15,10 @@ resource staticWebApp 'Microsoft.Web/staticSites@2021-01-15' = {
   properties: {
     repositoryUrl: repositoryUrl
     branch: branch
-    repositoryToken: repositoryToken
+    repositoryToken: repositoryToken 
     buildProperties: {
-      appLocation: './client'
-      apiLocation: './api'
+      githubActionSecretNameOverride: 'AZURE_SQL_DB_FULLSTACK'
+      skipGithubActionWorkflowGeneration: true
     }
   }
 }

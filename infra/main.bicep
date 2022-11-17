@@ -9,7 +9,6 @@ param name string
 @description('Primary location for all resources')
 param location string
 
-@minLength(1)
 @description('URL of the GitHub repository to be used for deployment')
 param repositoryUrl string
 
@@ -22,7 +21,7 @@ param branch string
 param repositoryToken string
 
 resource resourceGroup 'Microsoft.Resources/resourceGroups@2020-06-01' = {
-    name: 'rg-fullstack-${name}'
+    name: 'rg-fullstack-${branch}'
     location: location
     tags: tags
 }
