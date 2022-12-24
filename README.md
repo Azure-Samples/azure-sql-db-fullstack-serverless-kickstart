@@ -49,7 +49,7 @@ To run this sample in your subscription, make sure to fork the repository into y
 
 ## Repo branches
 
-This repo has different branches that shows the development at different stages. This is the branch 5.0.
+This repo has different branches that shows the development at different stages. This is the branch 6.0.
 
 - 1.0: First version, no database support
 - 2.0: Database support added
@@ -60,7 +60,7 @@ This repo has different branches that shows the development at different stages.
 
 ### V6.0 Notes
 
-In V6.0 the focus is on the front-end, now updated to be a proper [Vue](https://vuejs.org/) project.
+In V6.0 the focus is on the front-end, now updated to be a proper [Vue](https://vuejs.org/) project, splitting the UI in in smaller, reusable, components.
 
 ### V5.0 Notes
 
