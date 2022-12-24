@@ -1,3 +1,3 @@
-const API = "/api/ef/todo";
+const API = "/api/todo";
 
 export default API;

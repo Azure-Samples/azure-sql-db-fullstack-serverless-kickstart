@@ -64,7 +64,7 @@ namespace Todo.Backend.EFCore
         protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
             => optionsBuilder
             .LogTo(Console.WriteLine, LogLevel.Information)
-            .EnableSensitiveDataLogging()
+            //.EnableSensitiveDataLogging()
             .EnableDetailedErrors();
         
         public DbSet<Todo> Todos { get; set; }        

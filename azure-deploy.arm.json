@@ -42,7 +42,8 @@
                 "repositoryToken": "[parameters('repositoryToken')]",
                 "buildProperties": {
                     "appLocation": "[parameters('appLocation')]",
-                    "apiLocation": "[parameters('apiLocation')]"
+                    "apiLocation": "[parameters('apiLocation')]",
+                    "appArtifactLocation": "dist"
                 }
             },
             "sku": {
