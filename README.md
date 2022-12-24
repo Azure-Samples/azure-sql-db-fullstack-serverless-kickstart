@@ -49,14 +49,18 @@ To run this sample in your subscription, make sure to fork the repository into y
 
 ## Repo branches
 
-This repo has different branches that shows the development at different stages. This is the branch 5.0.
+This repo has different branches that shows the development at different stages. This is the branch 6.0.
 
 - 1.0: First version, no database support
 - 2.0: Database support added
 - 3.0: Authentication and Authorization via EasyAuth
 - 4.0: Resilient connections using Polly
 - 5.0: Database imperative or declarative CI/CD
-- 6.0: [This Branch] Make proper use of Vue.Js 3 for the frontend
+- 6:0: [This Branch] Using Vue3 client for the frontend
+
+### V6.0 Notes
+
+In V6.0 the focus is on the front-end, now updated to be a proper [Vue](https://vuejs.org/) project, splitting the UI in in smaller, reusable, components.
 
 ### V5.0 Notes
 
