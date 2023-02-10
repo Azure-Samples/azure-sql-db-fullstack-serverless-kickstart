@@ -8,7 +8,16 @@ on:
     types: [opened, synchronize, reopened, closed]
     branches:
       - v6.0
-
+- name: Setup .NET Core
+  uses: actions/setup-dotnet@v1
+  with:
+    dotnet-version: '6.0.x' 
+- name: Deploy Database
+  working-directory: ./database/imperative-deploy
+  env: 
+    ConnectionString: ${{ secrets.AZURE_SQL_CONNECTION_STRING }}    
+  run: dotnet build && dotnet run
+  
 jobs:
   build_and_deploy_job:
     if: github.event_name == 'push' || (github.event_name == 'pull_request' && github.event.action != 'closed')
