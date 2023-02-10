@@ -18,6 +18,7 @@ jobs:
       - uses: actions/checkout@v2
         with:
           submodules: true
+      ###### Start of addition ######
       - name: Setup .NET Core
         uses: actions/setup-dotnet@v1
         with:
@@ -36,6 +37,7 @@ jobs:
         env: 
           ConnectionString: ${{ secrets.AZURE_SQL_CONNECTION_STRING }}    
         run: dotnet build && dotnet run
+        ###### End of addition ######
       - name: Build And Deploy
         id: builddeploy
         uses: Azure/static-web-apps-deploy@v1
