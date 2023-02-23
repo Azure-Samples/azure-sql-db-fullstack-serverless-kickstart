@@ -265,7 +265,7 @@ To run Azure Functions locally, for example to debug them, you also need a local
 Make sure Azurite is running and then start the Azure Static Web App emulator:
 
 ```sh
-swa start ./client --api-location ./api    
+swa start   
 ```
 
 and you'll be good to go.
