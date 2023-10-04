@@ -14,7 +14,6 @@ products:
   - azure-app-service-static
   - azure-app-service-web
   - dotnet
-  - dotnet-core
   - azure-app-service-web
 description: 'Full-Stack Kickstart with Azure Static WebApps, Azure Functions, .NET Core, Vue.Js and Azure SQL'
 urlFragment: 'azure-sql-db-fullstack-serverless-kickstart'
