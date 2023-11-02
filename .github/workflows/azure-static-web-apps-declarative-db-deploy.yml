@@ -24,6 +24,12 @@ jobs:
           connection-string: ${{ secrets.AZURE_SQL_CONNECTION_STRING }}
           project-file: './database/declarative-deploy/todo_v6/todo_v6.sqlproj'
           build-arguments: '-c Release'
+      - name: Deploy Database
+        uses: azure/sql-action@v1.3
+        with:        
+          connection-string: ${{ secrets.AZURE_SQL_CONNECTION_STRING }}
+          project-file: './database/declarative-deploy/todo_v5/todo_v5.sqlproj'
+          build-arguments: '-c Release'
       - name: Build And Deploy
         id: builddeploy
         uses: Azure/static-web-apps-deploy@v1
