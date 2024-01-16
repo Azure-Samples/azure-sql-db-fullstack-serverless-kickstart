@@ -1,10 +1,14 @@
 create schema [web] authorization [dbo];
 go
 
-create user [webapp] with password = 'Super_Str0ng*P4ZZword!'
+grant execute on schema::[web] to [webapp]
 go
 
-grant execute on schema::[web] to [webapp]
+/* needed for EF Core */
+grant select on [dbo].[todos] to [webapp]
+grant insert on [dbo].[todos] to [webapp]
+grant update on [dbo].[todos] to [webapp]
+grant delete on [dbo].[todos] to [webapp]
 go
 
 create sequence dbo.[global_sequence]
