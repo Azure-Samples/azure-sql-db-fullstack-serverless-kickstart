@@ -49,6 +49,8 @@ you can get your public IP from here, for example: https://ifconfig.me/
 
 ## Deploy the database
 
+### Using SQL Scripts
+
 Database is deployed using [DbUp](http://dbup.github.io/). Switch to the `./database/deploy` folder and create new `.env` file containing the connection string to the created Azure SQL database. You can use the provide `.env.template` as a guide. The connection string look like:
 
 ```
@@ -84,6 +86,7 @@ Starting deployment...
 Beginning database upgrade
 Checking whether journal table exists..
 Journal table does not exist
+Executing Database Server script '00-create-user.sql'
 Executing Database Server script '01-create-objects.sql'
 Checking whether journal table exists..
 Creating the [dbo].[$__dbup_journal] table
@@ -94,9 +97,33 @@ Success!
 
 Database has been deployed successfully!
 
+### Using EF Core migrations
+
+If you prefer to use EF Core migrations, you can do so by running the following steps.
+
+First of all you have to set the `AzureSQL` environment variable
+
+```powershell
+$env:AzureSQL="SERVER=<my-server>.database.windows.net;DATABASE=todo_v2;UID=<my_user_id>;PWD=<my_user_password>;"
+```
+
+or 
+
+```bash
+export AzureSQL='SERVER=<my-server>.database.windows.net;DATABASE=todo_v2;UID=<my_user_id>;PWD=<my_user_password>;
+```
+
+then you can run the migration tool:
+
+```bash
+dotnet ef database update
+```
+
+and your database will be created.
+
 ## Test solution locally
 
-Before starting the solution locally, you have to configure the Azure Function that is used to provide the backed API. In the `./api` folder create a `local.settings.json` file starting from the provided template. All you have to do is update the connection string with the value correct for you solution. If have created the Azure SQL database as described above you'll have a database named `todo_v2`. Just make sure you add the correct server name in the `local.settings.json`. The database name, user login and password are already set in the template file to match those used in this repository and in the `./database/sql/01-create-objects.sql` file.
+Before starting the solution locally, you have to configure the Azure Function that is used to provide the backed API. In the `./api` folder create a `local.settings.json` file starting from the provided template. All you have to do is update the connection string with the value correct for you solution. If have created the Azure SQL database as described above you'll have a database named `todo_v2`. Just make sure you add the correct server name in the `local.settings.json`. The database name, user login and password are already set in the template file to match those used in this repository and in the `./database/sql/00-create-user.sql` file.
 
 To run Azure Functions locally, for example to debug them, you also need a local Azure Storage emulator. You can use [Azurite](https://docs.microsoft.com/en-us/azure/storage/common/storage-use-azurite?tabs=visual-studio) that also has a VS Code extension.
 
